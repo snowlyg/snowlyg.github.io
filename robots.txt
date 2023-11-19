@@ -114,4 +114,4 @@ Disallow: /
 User-agent: ZoominfoBot
 Disallow: /
 
-Sitemap: https://blog.snowlyg.com/sitemap.xml
+Sitemap: https://snowlyg.github.io/sitemap.xml

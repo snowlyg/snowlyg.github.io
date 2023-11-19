@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>new - 标签 - SNOWLYG的技术分享</title>
-        <link>https://blog.snowlyg.com/tags/new/</link>
+        <link>https://snowlyg.github.io/tags/new/</link>
         <description>new - 标签 - SNOWLYG的技术分享</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 06 Mar 2021 16:56:40 &#43;0800</lastBuildDate><atom:link href="https://blog.snowlyg.com/tags/new/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 06 Mar 2021 16:56:40 &#43;0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/new/" rel="self" type="application/rss+xml" /><item>
     <title>PHP 转 GO 新手问题汇总</title>
-    <link>https://blog.snowlyg.com/learning-glang-for-phper/</link>
+    <link>https://snowlyg.github.io/learning-glang-for-phper/</link>
     <pubDate>Sat, 06 Mar 2021 16:56:40 &#43;0800</pubDate>
     <author>snowlyg</author>
-    <guid>https://blog.snowlyg.com/learning-glang-for-phper/</guid>
+    <guid>https://snowlyg.github.io/learning-glang-for-phper/</guid>
     <description><![CDATA[自己整理的一些PHP转GO新手问题，以及一些解决问题的经验分享]]></description>
 </item></channel>
 </rss>

@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>tools - 标签 - SNOWLYG的技术分享</title>
-        <link>https://blog.snowlyg.com/tags/tools/</link>
+        <link>https://snowlyg.github.io/tags/tools/</link>
         <description>tools - 标签 - SNOWLYG的技术分享</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 05 Jun 2021 14:59:30 &#43;0800</lastBuildDate><atom:link href="https://blog.snowlyg.com/tags/tools/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 05 Jun 2021 14:59:30 &#43;0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/tools/" rel="self" type="application/rss+xml" /><item>
     <title>控制台窗口和powershell运行服务会卡住的解决办法</title>
-    <link>https://blog.snowlyg.com/cmd/</link>
+    <link>https://snowlyg.github.io/cmd/</link>
     <pubDate>Sat, 05 Jun 2021 14:59:30 &#43;0800</pubDate>
     <author>snowlyg</author>
-    <guid>https://blog.snowlyg.com/cmd/</guid>
+    <guid>https://snowlyg.github.io/cmd/</guid>
     <description><![CDATA[控制台窗口和powershell运行服务会卡住的解决办法]]></description>
 </item></channel>
 </rss>

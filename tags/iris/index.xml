@@ -1,21 +1,21 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>IRIS - 标签 - SNOWLYG的技术分享</title>
-        <link>https://blog.snowlyg.com/tags/iris/</link>
+        <link>https://snowlyg.github.io/tags/iris/</link>
         <description>IRIS - 标签 - SNOWLYG的技术分享</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 06 Mar 2021 17:10:32 &#43;0800</lastBuildDate><atom:link href="https://blog.snowlyg.com/tags/iris/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 06 Mar 2021 17:10:32 &#43;0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/iris/" rel="self" type="application/rss+xml" /><item>
     <title>iris &#43; casbin 从陌生到学会使用的过程</title>
-    <link>https://blog.snowlyg.com/iris-go-api-2/</link>
+    <link>https://snowlyg.github.io/iris-go-api-2/</link>
     <pubDate>Sat, 06 Mar 2021 17:10:32 &#43;0800</pubDate>
     <author>snowlyg</author>
-    <guid>https://blog.snowlyg.com/iris-go-api-2/</guid>
+    <guid>https://snowlyg.github.io/iris-go-api-2/</guid>
     <description><![CDATA[简单介绍iris+casbin从陌生到学会使用的过程详细]]></description>
 </item><item>
     <title>iris-go框架构建登陆api项目开发详解</title>
-    <link>https://blog.snowlyg.com/iris-go-api-1/</link>
+    <link>https://snowlyg.github.io/iris-go-api-1/</link>
     <pubDate>Sat, 06 Mar 2021 16:33:37 &#43;0800</pubDate>
     <author>snowlyg</author>
-    <guid>https://blog.snowlyg.com/iris-go-api-1/</guid>
+    <guid>https://snowlyg.github.io/iris-go-api-1/</guid>
     <description><![CDATA[简单的介绍iris-go框架构建登陆api后台项目的过程]]></description>
 </item></channel>
 </rss>
