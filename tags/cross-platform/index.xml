@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>cross-platform - 标签 - SNOWLYG的技术分享</title>
+        <link>https://blog.snowlyg.com/tags/cross-platform/</link>
+        <description>cross-platform - 标签 - SNOWLYG的技术分享</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 06 Mar 2021 13:55:40 &#43;0800</lastBuildDate><atom:link href="https://blog.snowlyg.com/tags/cross-platform/" rel="self" type="application/rss+xml" /><item>
+    <title>Golang 如何交叉编译？在一个平台上生成另一个平台的可执行程序</title>
+    <link>https://blog.snowlyg.com/golang-for-build/</link>
+    <pubDate>Sat, 06 Mar 2021 13:55:40 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/golang-for-build/</guid>
+    <description><![CDATA[Golang 支持交叉编译，在一个平台上生成另一个平台的可执行程序，最近使用了一下，非常好用，这里备忘一下。]]></description>
+</item></channel>
+</rss>

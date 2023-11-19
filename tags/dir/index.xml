@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>dir - 标签 - SNOWLYG的技术分享</title>
+        <link>https://blog.snowlyg.com/tags/dir/</link>
+        <description>dir - 标签 - SNOWLYG的技术分享</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 11 Jul 2021 14:23:13 &#43;0800</lastBuildDate><atom:link href="https://blog.snowlyg.com/tags/dir/" rel="self" type="application/rss+xml" /><item>
+    <title>Golang 程序中获取执行目录的几种方式</title>
+    <link>https://blog.snowlyg.com/dir/</link>
+    <pubDate>Sun, 11 Jul 2021 14:23:13 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/dir/</guid>
+    <description><![CDATA[Golang 程序中获取执行目录的几种方式]]></description>
+</item></channel>
+</rss>

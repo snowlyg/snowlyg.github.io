@@ -1,0 +1,79 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>SNOWLYG的技术分享</title>
+        <link>https://blog.snowlyg.com/</link>
+        <description>SNOWLYG的技术分享</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 13 Nov 2022 21:33:30 &#43;0800</lastBuildDate>
+            <atom:link href="https://blog.snowlyg.com/index.xml" rel="self" type="application/rss+xml" />
+        <item>
+    <title>IPTV电信电视频道列表的抓取教程</title>
+    <link>https://blog.snowlyg.com/iptv/</link>
+    <pubDate>Sun, 13 Nov 2022 21:33:30 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/iptv/</guid>
+    <description><![CDATA[IPTV电信电视频道列表的抓取教程]]></description>
+</item><item>
+    <title>Golang 程序中获取执行目录的几种方式</title>
+    <link>https://blog.snowlyg.com/dir/</link>
+    <pubDate>Sun, 11 Jul 2021 14:23:13 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/dir/</guid>
+    <description><![CDATA[Golang 程序中获取执行目录的几种方式]]></description>
+</item><item>
+    <title>简单使用 docker 配置开发环境（mac&#43;php）</title>
+    <link>https://blog.snowlyg.com/simple/</link>
+    <pubDate>Sat, 19 Jun 2021 22:12:48 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/simple/</guid>
+    <description><![CDATA[简单使用 docker 配置开发环境,在 mac 环境下搭建 PHP环境]]></description>
+</item><item>
+    <title>控制台窗口和powershell运行服务会卡住的解决办法</title>
+    <link>https://blog.snowlyg.com/cmd/</link>
+    <pubDate>Sat, 05 Jun 2021 14:59:30 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/cmd/</guid>
+    <description><![CDATA[控制台窗口和powershell运行服务会卡住的解决办法]]></description>
+</item><item>
+    <title>不同语言之间数据压缩/解压实现</title>
+    <link>https://blog.snowlyg.com/clizb/</link>
+    <pubDate>Fri, 23 Apr 2021 20:41:20 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/clizb/</guid>
+    <description><![CDATA[数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。]]></description>
+</item><item>
+    <title>golang 简单实现数据转换格式化</title>
+    <link>https://blog.snowlyg.com/gotransformer/</link>
+    <pubDate>Fri, 23 Apr 2021 20:35:37 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/gotransformer/</guid>
+    <description><![CDATA[golang 基于反射原理实现简单实现数据转换格式化]]></description>
+</item><item>
+    <title>学习篇-并发通道</title>
+    <link>https://blog.snowlyg.com/channel/</link>
+    <pubDate>Fri, 26 Mar 2021 20:02:48 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/channel/</guid>
+    <description><![CDATA[并发通道篇-控制 windows 服务]]></description>
+</item><item>
+    <title>学习篇-进阶</title>
+    <link>https://blog.snowlyg.com/advance/</link>
+    <pubDate>Fri, 26 Mar 2021 20:02:48 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/advance/</guid>
+    <description><![CDATA[进阶篇-注册 windows 服务]]></description>
+</item><item>
+    <title>学习篇-基础</title>
+    <link>https://blog.snowlyg.com/base/</link>
+    <pubDate>Mon, 22 Mar 2021 21:17:27 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/base/</guid>
+    <description><![CDATA[基础篇-编写一个简单的go程序]]></description>
+</item><item>
+    <title>学习篇-前言</title>
+    <link>https://blog.snowlyg.com/start/</link>
+    <pubDate>Fri, 19 Mar 2021 22:49:30 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/start/</guid>
+    <description><![CDATA[前言篇-随便写一些闲话]]></description>
+</item></channel>
+</rss>

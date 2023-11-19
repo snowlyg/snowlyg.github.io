@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Nodejs - 分类 - SNOWLYG的技术分享</title>
+        <link>https://blog.snowlyg.com/categories/nodejs/</link>
+        <description>Nodejs - 分类 - SNOWLYG的技术分享</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 23 Apr 2021 20:41:20 &#43;0800</lastBuildDate><atom:link href="https://blog.snowlyg.com/categories/nodejs/" rel="self" type="application/rss+xml" /><item>
+    <title>不同语言之间数据压缩/解压实现</title>
+    <link>https://blog.snowlyg.com/clizb/</link>
+    <pubDate>Fri, 23 Apr 2021 20:41:20 &#43;0800</pubDate>
+    <author>snowlyg</author>
+    <guid>https://blog.snowlyg.com/clizb/</guid>
+    <description><![CDATA[数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。]]></description>
+</item></channel>
+</rss>

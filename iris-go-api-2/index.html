@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noodp"/><title>iris &#43; casbin 从陌生到学会使用的过程 | </title><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://blog.snowlyg.com/iris-go-api-2/featured-image.jpg"/>
+<meta name="twitter:title" content="iris &#43; casbin 从陌生到学会使用的过程"/>
+<meta name="twitter:description" content="简单介绍iris&#43;casbin从陌生到学会使用的过程详细"/><meta name="twitter:creator" content="@ld_snowlyg"/><meta name="Description" content="简单介绍iris&#43;casbin从陌生到学会使用的过程详细"><meta property="og:title" content="iris &#43; casbin 从陌生到学会使用的过程" />
+<meta property="og:description" content="简单介绍iris&#43;casbin从陌生到学会使用的过程详细" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.snowlyg.com/iris-go-api-2/" /><meta property="og:image" content="https://blog.snowlyg.com/iris-go-api-2/featured-image.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-03-06T17:10:32+08:00" />
+<meta property="article:modified_time" content="2021-03-06T17:10:32+08:00" />
+
+<meta name="application-name" content="SNOWLYG">
+<meta name="apple-mobile-web-app-title" content="SNOWLYG"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+        <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://blog.snowlyg.com/iris-go-api-2/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "iris + casbin 从陌生到学会使用的过程",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/blog.snowlyg.com\/iris-go-api-2\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/blog.snowlyg.com\/iris-go-api-2\/featured-image.jpg",
+                            "width":  3827 ,
+                            "height":  2542 
+                        }],"genre": "posts","keywords": "Golang, IRIS, Api","wordCount":  3885 ,
+        "url": "https:\/\/blog.snowlyg.com\/iris-go-api-2\/","datePublished": "2021-03-06T17:10:32+08:00","dateModified": "2021-03-06T17:10:32+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
+        "publisher": {
+            "@type": "Person",
+            "name": "", "image": [
+            {
+            "@type": "ImageObject",
+            "url": "\/images\/avatar.jpg"
+            }
+            ]},"author": {
+                "@type": "Person",
+                "name": ""
+            },"description": "简单介绍iris+casbin从陌生到学会使用的过程详细"
+    }
+    </script><script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "主页",
+            "item": "https:\/\/blog.snowlyg.com"
+        },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Golang",
+            "item": "https://blog.snowlyg.com/categories/golang/"
+        },{
+                "@type": "ListItem",
+                "position": 3,
+                "name": "iris \u002b casbin 从陌生到学会使用的过程"
+            }]
+    }
+</script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="SNOWLYG的技术分享" class="header-logo logo-svg"><span class="header-title-pre"><i class='fas fa-pencil-alt fa-fw'></i></span>首页</a>
+        </div>
+        <div class="menu">
+            <nav>
+                <ul class="menu-inner"><li>
+                        <a class="menu-item" href="/posts/" title="文章"> 文章 </a>
+                    </li><li>
+                        <a class="menu-item" href="/tags/" title="标签"> 标签 </a>
+                    </li><li>
+                        <a class="menu-item" href="/categories/" title="分类"> 分类 </a>
+                    </li><li>
+                        <a class="menu-item" href="https://www.github.com/snowlyg/iris/wiki" title="go-iris中文文档" rel="noopener noreffer" target="_blank"> go-iris中文文档 </a>
+                    </li><li>
+                        <a class="menu-item" href="https://brendenaudrina6287.gitbook.io/qor-doc-zh" title="qor中文文档" rel="noopener noreffer" target="_blank"> qor中文文档 </a>
+                    </li><li>
+                        <a class="menu-item" href="https://www.github.com/snowlyg" title="GITHUB" rel="noopener noreffer" target="_blank"> GITHUB </a>
+                    </li></ul>
+            </nav><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <span class="svg-icon icon-search"></span>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <span class="svg-icon icon-cancel"></span>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <span class="svg-icon icon-loading"></span>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <span class="svg-icon icon-moon"></span>
+                </a>
+            </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="SNOWLYG的技术分享" class="header-logo"><span class="header-title-pre"><i class='fas fa-pencil-alt fa-fw'></i></span>首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <span class="svg-icon icon-search"></span>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <span class="svg-icon icon-cancel"></span>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <span class="svg-icon icon-loading"></span>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><nav>
+                <ul><li>
+                        <a class="menu-item" href="/posts/" title="文章">文章</a>
+                    </li><li>
+                        <a class="menu-item" href="/tags/" title="标签">标签</a>
+                    </li><li>
+                        <a class="menu-item" href="/categories/" title="分类">分类</a>
+                    </li><li>
+                        <a class="menu-item" href="https://www.github.com/snowlyg/iris/wiki" title="go-iris中文文档" rel="noopener noreffer" target="_blank">go-iris中文文档</a>
+                    </li><li>
+                        <a class="menu-item" href="https://brendenaudrina6287.gitbook.io/qor-doc-zh" title="qor中文文档" rel="noopener noreffer" target="_blank">qor中文文档</a>
+                    </li><li>
+                        <a class="menu-item" href="https://www.github.com/snowlyg" title="GITHUB" rel="noopener noreffer" target="_blank">GITHUB</a>
+                    </li></ul>
+            </nav>
+            <a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <span class="svg-icon icon-moon"></span>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+<div class="container content-article page-toc theme-classic"><div class="toc" id="toc-auto">
+            <div class="toc-title">目录</div>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div>
+    
+
+    <div class="header-post">
+
+        
+
+        
+        <div class="post-title">
+
+                <div class="post-all-meta">
+                    <nav class="breadcrumbs">
+    <ol>
+        <li><a href="/">主页 </a></li><li><a href="/categories/golang/">Golang </a></li><li>iris &#43; casbin 从陌生到学会使用的过程</li>
+    </ol>
+</nav>
+                    <h1 class="single-title flipInX">iris &#43; casbin 从陌生到学会使用的过程</h1><h2 class="single-subtitle">iris &#43; casbin 从陌生到学会使用的过程</h2><div class="post-meta">
+                        <div class="post-meta-line"><span class="post-category">
+                                <a href="/categories/golang/"><i class="svg-icon icon-folder"></i>Golang</a>&nbsp;<a href="/categories/iris/"><i class="svg-icon icon-folder"></i>IRIS</a>
+                            </span><span class="post-meta-date">
+                                <i class="svg-icon icon-clock"></i><time class="timeago" datetime="2021-03-06">2021-03-06  17:10:32</time>
+                            </span><span class="post-meta-words">
+                                <i class="svg-icon icon-pencil"></i>约 3885 字
+                            </span>
+                            <span class="post-meta-reading">
+                                <i class="svg-icon icon-stopwatch"></i>预计阅读 8 分钟
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            </div>
+
+    <article class="single toc-start">
+
+        <div class="content-block content-block-first content-block-position">
+
+        <div class="post"><div class="image-theme-classic">
+                <img src="https://blog.snowlyg.com/iris-go-api-2/featured-image.jpg" style="width: 100%">
+            </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#后记">后记</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><h3 id="前言">前言</h3>
+<p>前面写了一篇 <a href="https://blog.snowlyg.com/iris-go-api-1/" title="【iris-go 框架构建登陆 API 项目开发过程】" target="_blank" rel="noopener noreffer">【iris-go 框架构建登陆 API 项目开发过程】</a> 的文章，因为篇幅的关系文章并没有介绍如何实现权限控制。接下来我将会介绍如何使用 casbin 在 iris 的项目中实现权限控制，项目采用 grom 做数据处理。</p>
+<blockquote>
+<p>本文纯属个人简陋观点和经验，如果有错误的地方，欢迎大家指出。</p>
+</blockquote>
+<p>这里继续讲一些废话，原本 <a href="https://github.com/snowlyg/IrisAdminApi" title="IrisAdminApi" target="_blank" rel="noopener noreffer">IrisAdminApi</a> 项目采用的最原始的 RBAC 的权限控制实现，分别创建 roles ， permissions 表，然后定义关联关系，写一些关联创建逻辑。在实现的过程发现不管是使用 gorm ，xorm，beego的orm，定义关联关系都挺麻烦的，特别是多对对关系，还有一些多态关系等等。可能 Laravel 使用习惯性了，发现框架功能太齐全，对自身的提升真的会有阻碍。</p>
+<p>这时候我就想有没有别人实现好的权限控制轮子，结果一顿搜索，让我找到了 casbin。这就是我和 casbin 的初识了。</p>
+<p>刚见到 casbin 其实有些不知道如何下手，毕竟没有见过类似的项目。相信很多新手也会有同样的感受。不过没关系，一回生两回熟，像我们这样经过九年义务教育的社会主义好青年，最不怕的就是学习新事物。</p>
+<p>大致介绍下我学习 casbin 的思路：</p>
+<ul>
+<li>首先：看文档，就像买了新东西看说明书一样，学习任何新事物必不可少的一步。不需要完全背下来，大致有个印象就好。不懂的地方可以多看几遍，不要怕麻烦。</li>
+<li>接下来：在文档中找到我们需要的功能，我们需要的是一个与 gorm 工作的 RBAC 权限控制，正好我发现作者有写 gorm 相关的适配器，其实作者为不同语言写非常多的适配器，这样可以省去我们的很多时间。</li>
+<li>打开 <a href="https://github.com/casbin/gorm-adapter" title="gorm-adapter" target="_blank" rel="noopener noreffer">gorm-adapter</a> 项目，按照说明执行安装适配器：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go get github.com/casbin/gorm-adapter
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>查看实例代码，很多项目多有实例代码，其实这些代码的价值比文档的价值更高，能让我们更好的理解项目。特别是注释，需要仔细看完。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/casbin/casbin/v2&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">gormadapter</span> <span class="s">&#34;github.com/casbin/gorm-adapter/v2&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span> <span class="s">&#34;github.com/go-sql-driver/mysql&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 初始化一个 Gorm 适配器并且在一个 Casbin enforcer 中使用它:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 这个适配器会使用一个名为 &#34;casbin&#34; 的 MySQL 数据库。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 如果数据库不存在，适配器会自动创建它。 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 你同样也可以像这样 gormadapter.NewAdapterByDB(gormInstance) 使用一个已经存在的 gorm 实例。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">a</span> <span class="o">:=</span> <span class="nx">gormadapter</span><span class="p">.</span><span class="nf">NewAdapter</span><span class="p">(</span><span class="s">&#34;mysql&#34;</span><span class="p">,</span> <span class="s">&#34;mysql_username:mysql_password@tcp(127.0.0.1:3306)/&#34;</span><span class="p">)</span> <span class="c1">//你的驱动和数据源
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">e</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">casbin</span><span class="p">.</span><span class="nf">NewEnforcer</span><span class="p">(</span><span class="s">&#34;examples/rbac_model.conf&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">// 或者你可以像这样使用一个其他的数据库 &#34;abc&#34; :
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 适配器会使用名为 &#34;casbin_rule&#34; 的数据表。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 如果数据表不存在，适配器会自动创建它。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// a := gormadapter.NewAdapter(&#34;mysql&#34;, &#34;mysql_username:mysql_password@tcp(127.0.0.1:3306)/abc&#34;, true)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 从数据库加载策略规则
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">e</span><span class="p">.</span><span class="nf">LoadPolicy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">// 检查权限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">e</span><span class="p">.</span><span class="nf">Enforce</span><span class="p">(</span><span class="s">&#34;alice&#34;</span><span class="p">,</span> <span class="s">&#34;data1&#34;</span><span class="p">,</span> <span class="s">&#34;read&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">// 更新策略
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// e.AddPolicy(...)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// e.RemovePolicy(...)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	<span class="c1">// 保存策略到数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">e</span><span class="p">.</span><span class="nf">SavePolicy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>看完这个实例的代码和注释，相信你已经了解 casbin 怎么使用了。如果还不了解，那就多看几遍。</p>
+</li>
+<li>
+<p>在看文档的过程中发现作者已经写好了 <a href="https://casbin.org/docs/en/rbac-api" title=" RBAC" target="_blank" rel="noopener noreffer">RBAC</a> 相关的 API 。所以我们并不需要去重复的这些工作。你没有看到？这说明了仔细看文档的重要的性。</p>
+</li>
+<li>
+<p>现在我们接着前面的项目，将 casbin 功能添加到项目中。编辑 models/base.go 文件：</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">Db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span> 
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">err</span> <span class="kt">error</span>  
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">dirverName</span> <span class="kt">string</span>  
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">conn</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">Enforcer</span> <span class="o">*</span><span class="nx">casbin</span><span class="p">.</span><span class="nx">Enforcer</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Register</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">dirverName</span> <span class="p">=</span> <span class="s">&#34;mysql&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nf">isTestEnv</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//如果是测试使用测试数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">conn</span> <span class="p">=</span> <span class="s">&#34;root:wemT5ZNuo074i4FNsTwl4KhfVSvOlBcF@(127.0.0.1:3306)/tiris&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">conn</span> <span class="p">=</span> <span class="s">&#34;root:wemT5ZNuo074i4FNsTwl4KhfVSvOlBcF@(127.0.0.1:3306)/iris&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//初始化数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">Db</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">gorm</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">dirverName</span><span class="p">,</span> <span class="nx">conn</span><span class="o">+</span><span class="s">&#34;?charset=utf8&amp;parseTime=True&amp;loc=Local&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">color</span><span class="p">.</span><span class="nf">Red</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;gorm open 错误: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="nx">gormadapter</span><span class="p">.</span><span class="nf">NewAdapter</span><span class="p">(</span><span class="s">&#34;mysql&#34;</span><span class="p">,</span><span class="nx">conn</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">	<span class="nx">Enforcer</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">casbin</span><span class="p">.</span><span class="nf">NewEnforcer</span><span class="p">(</span><span class="s">&#34;examples/rbac_model.conf&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Enforcer</span><span class="p">.</span><span class="nf">LoadPolicy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>这里我们不需要生成新的 casbin 数据库，直接使用在 iris 数据库生成 casbin_rule 数据表。同时将 <code>rbac_model.conf</code> 文件复制到自己的项目的对应路径中。这样 casbin 就已经集成好了，重启项目就会生成对应的 casbin_rule 数据表了。</li>
+<li>为什么没有使用 e.AddPolicy(&hellip;)，e.SavePolicy()，e.Enforce(&ldquo;alice&rdquo;, &ldquo;data1&rdquo;, &ldquo;read&rdquo;) 这些方法？ 如果你还有这样的疑问，说明你没有看实例的注释，要么就是没有仔细阅读。请多看几遍。</li>
+<li>虽然我们已经集成了 casbin ，但是我们还没有实现权限控制的目的。如果实现？我们需要关联角色，权限等数据到用户，并且在用户访问相应资源的时候检查用户是否拥有权限。</li>
+<li>到这里有经验的朋友就会发现，我们需要一个中间件去实现用户权限的检测。那么我们移驾到 <a href="https://github.com/snowlyg/iris/wiki/Routing-middleware" title="iris 的中间件文档" target="_blank" rel="noopener noreffer">iris 的中间件文档</a>，我们仔细的看以遍文档，你会发现已经有了 casbin 的中间件实现。并不需要我们自己编写。</li>
+<li>接着来到 <a href="https://github.com/iris-contrib/middleware/tree/master/casbin" title="middleware/tree/master/casbin" target="_blank" rel="noopener noreffer">middleware/tree/master/casbin</a></li>
+</ul>
+<p>按照说明文档，先安装 casbin 还有 casbin-middleware，分别执行一下命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"> go get github.com/casbin/casbin
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"> go get github.com/iris-contrib/middleware/casbin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>然后按照实例中的代码将中间件添加到路由：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">routers</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl"><span class="s">&#34;IrisAdmin/controllers&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">&#34;IrisAdmin/middleware&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">&#34;IrisAdmin/models&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">&#34;github.com/kataras/iris/v12&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">&#34;github.com/casbin/casbin/v2&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">cm</span> <span class="s">&#34;github.com/iris-contrib/middleware/casbin&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">Register</span><span class="p">(</span><span class="nx">app</span> <span class="o">*</span><span class="nx">iris</span><span class="p">.</span><span class="nx">Application</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 路由集使用跨域中间件 CrsAuth()
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 允许 Options 方法 AllowMethods(iris.MethodOptions)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">main</span> <span class="o">:=</span> <span class="nx">app</span><span class="p">.</span><span class="nf">Party</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">middleware</span><span class="p">.</span><span class="nf">CrsAuth</span><span class="p">()).</span><span class="nf">AllowMethods</span><span class="p">(</span><span class="nx">iris</span><span class="p">.</span><span class="nx">MethodOptions</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"> <span class="nx">v1</span> <span class="o">:=</span> <span class="nx">main</span><span class="p">.</span><span class="nf">Party</span><span class="p">(</span><span class="s">&#34;/v1&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="nx">v1</span><span class="p">.</span><span class="nf">Post</span><span class="p">(</span><span class="s">&#34;/admin/login&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserLogin</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">     <span class="nx">v1</span><span class="p">.</span><span class="nf">PartyFunc</span><span class="p">(</span><span class="s">&#34;/admin&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">admin</span> <span class="nx">iris</span><span class="p">.</span><span class="nx">Party</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">casbinMiddleware</span> <span class="o">:=</span> <span class="nx">cm</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">models</span><span class="p">.</span><span class="nx">Enforcer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">admin</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">middleware</span><span class="p">.</span><span class="nf">JwtHandler</span><span class="p">().</span><span class="nx">Serve</span><span class="p">,</span> <span class="nx">middleware</span><span class="p">.</span><span class="nx">AuthToken</span><span class="err">，</span><span class="nx">casbinMiddleware</span><span class="p">.</span><span class="nx">ServeHTTP</span><span class="p">)</span> <span class="c1">//登录验证
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>         <span class="nx">admin</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;/logout&#34;</span><span class="p">,</span>  <span class="nx">controllers</span><span class="p">.</span><span class="nx">UserLogout</span><span class="p">).</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;退出&#34;</span>
+</span></span><span class="line"><span class="cl">     <span class="p">})</span>
+</span></span><span class="line"><span class="cl"> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>这里中间件有一个新的 <code>casbinmodel.conf</code>文件，需要把里面的内容替换到前面提到的 <code>rbac_model.conf</code> 文件中。</li>
+<li>现在登陆项目访问任何接口都会出现 <code>403</code> 拒绝访问的状态返回，这说明中间件生效了。接下来我们需要使用 casbin 提供的 Api 将项目的用户，角色和权限相互关联起来。</li>
+<li>打开 <a href="https://casbin.org/docs/zh-CN/rbac-api" title="rbac-api" target="_blank" rel="noopener noreffer">rbac-api</a> 页面，我们看到有一个 <code>AddRoleForUser()</code> 给用户添加角色的方法。我们将它添加到用户的创建和更新方法中，实现用户和角色的关联。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">CreateUser</span><span class="p">()</span> <span class="p">(</span><span class="nx">user</span> <span class="o">*</span><span class="nx">User</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">salt</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">bcrypt</span><span class="p">.</span><span class="nf">Salt</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">hash</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">bcrypt</span><span class="p">.</span><span class="nf">Hash</span><span class="p">(</span><span class="s">&#34;password&#34;</span><span class="p">,</span> <span class="nx">salt</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">User</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">Username</span><span class="p">:</span> <span class="s">&#34;username&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">Password</span><span class="p">:</span> <span class="nx">hash</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">Name</span><span class="p">:</span>     <span class="s">&#34;name&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">Db</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">Error</span><span class="p">;</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">color</span><span class="p">.</span><span class="nf">Red</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;CreateUserErr:%s \n &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="nx">userId</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">FormatUint</span><span class="p">(</span><span class="nb">uint64</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">ID</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">database</span><span class="p">.</span><span class="nf">GetEnforcer</span><span class="p">().</span><span class="nf">AddRoleForUser</span><span class="p">(</span><span class="nx">userId</span><span class="p">,</span> <span class="s">&#34;1&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">color</span><span class="p">.</span><span class="nf">Red</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;CreateUserErr:%s \n &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">  <span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>这里需要注意的是  <code>AddRoleForUser()</code> 函数接受的参数都是字符串，所以用户和角色的 Id 都需要转换一下格式。如果是多角色传入多个角色的 Id 循环添加即可。</li>
+<li>接下来我们要关联角色和权限， 在 <a href="https://casbin.org/docs/zh-CN/rbac-api" title="rbac-api" target="_blank" rel="noopener noreffer">rbac-api</a> 页面，找了半天发现没有添加权限的方法。仔细看过文档多次之后，确定真的没有添加权限到角色的方法。那么，我们接下来该怎么办呢？我的解决方法是查看 casbin 的源码。因为我十分确定，添加权限的方法肯定是存在的，只是<a href="https://casbin.org/docs/zh-CN/rbac-api" title="rbac-api" target="_blank" rel="noopener noreffer">rbac-api</a> 页面上没有而已。</li>
+<li>果然，我在文档找到了相关方法:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">func (e *Enforcer) AddPolicy(params ...interface{}) (bool, error) {
+</span></span><span class="line"><span class="cl">	return e.AddNamedPolicy(&#34;p&#34;, params...)
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>是不是很眼熟。没错，就是在前面适配器实例中出现过的方法。它的说明是添加策略，当时没想到策略就是权限，真的是一叶障目，不见南山。众里寻他千百度&hellip;..</p>
+<ul>
+<li>既然找到方法，那么将角色关联权限（策略）的逻辑添加到角色的创建和更新当中。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">roleId</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">FormatUint</span><span class="p">(</span><span class="nb">uint64</span><span class="p">(</span><span class="nx">role</span><span class="p">.</span><span class="nx">ID</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">perms</span> <span class="p">[]</span><span class="nx">Permission</span>
+</span></span><span class="line"><span class="cl"><span class="nx">models</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="s">&#34;id in (?)&#34;</span><span class="p">,</span> <span class="nx">permIds</span><span class="p">).</span><span class="nf">Find</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">perms</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">perm</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">perms</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">models</span><span class="p">.</span><span class="nx">Enforcer</span><span class="p">.</span><span class="nf">AddPolicy</span><span class="p">(</span><span class="nx">roleId</span><span class="p">,</span> <span class="nx">perm</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">perm</span><span class="p">.</span><span class="nx">Act</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">color</span><span class="p">.</span><span class="nf">Red</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;AddPolicy:%s \n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>同样 <code>AddPolicy()</code> 函数参数都是字符串，角色 Id 也需要转换一下。</p>
+<ul>
+<li>所有数据都关联好了之后，我们创建好相关的角色和权限数据。用户就可以正常访问登陆了。详细代码请查看项目 <a href="https://github.com/snowlyg/IrisAdminApi" title="IrisAdminApi" target="_blank" rel="noopener noreffer">IrisAdminApi</a> 。</li>
+</ul>
+<h3 id="后记">后记</h3>
+<p>这里记录一下如何使用 iris 自动生成权限（策略）的思路。</p>
+<ul>
+<li>首先，肯定要从路由入手，给路由都加上名称，方便区分权限。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nf">PartyFunc</span><span class="p">(</span><span class="s">&#34;/users&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">users</span> <span class="nx">iris</span><span class="p">.</span><span class="nx">Party</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">users</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">GetAllUsers</span><span class="p">).</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;用户列表&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">users</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;/{id:uint}&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">GetUser</span><span class="p">).</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;用户详情&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">users</span><span class="p">.</span><span class="nf">Post</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">CreateUser</span><span class="p">).</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;创建用户&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">users</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="s">&#34;/{id:uint}&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">UpdateUser</span><span class="p">).</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;编辑用户&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">users</span><span class="p">.</span><span class="nf">Delete</span><span class="p">(</span><span class="s">&#34;/{id:uint}&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">DeleteUser</span><span class="p">).</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;删除用户&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">users</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;/profile&#34;</span><span class="p">,</span> <span class="nx">controllers</span><span class="p">.</span><span class="nx">GetProfile</span><span class="p">).</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;个人信息&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样就可以在获取路由的时候获取到对应的名称了。</p>
+<ul>
+<li>如何获取 iris 应用的路由信息？找了文档发现没有相关的方法。这时候我们只能取查看源码了。
+在源码中我找到了如下源码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="c1">// GetRoutes 返回路由的信息,
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 这些信息有些可以被修改，有些不可以。
+</span></span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 需要刷新路由器到方法或路径或处理程序更改才能进行。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">api</span> <span class="o">*</span><span class="nx">APIBuilder</span><span class="p">)</span> <span class="nf">GetRoutes</span><span class="p">()</span> <span class="p">[]</span><span class="o">*</span><span class="nx">Route</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">api</span><span class="p">.</span><span class="nx">routes</span><span class="p">.</span><span class="nf">getAll</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// GetRoute 基于路由名称返回已注册路由， 否则返回nil。
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 一个提示： &#34;路由名称&#34; 区分大小写。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">api</span> <span class="o">*</span><span class="nx">APIBuilder</span><span class="p">)</span> <span class="nf">GetRoute</span><span class="p">(</span><span class="nx">routeName</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Route</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">api</span><span class="p">.</span><span class="nx">routes</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">routeName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// GetRouteByPath 基于模版路径 (`Route.Tmpl().Src`) 返回已注册路由。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">api</span> <span class="o">*</span><span class="nx">APIBuilder</span><span class="p">)</span> <span class="nf">GetRouteByPath</span><span class="p">(</span><span class="nx">tmplPath</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Route</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">api</span><span class="p">.</span><span class="nx">routes</span><span class="p">.</span><span class="nf">getByPath</span><span class="p">(</span><span class="nx">tmplPath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// GetRoutesReadOnly 返回只读授权的已注册路由，
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 你不能也不应该在请求状态下改变路由的任何属性，
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 如果想要改变可以使用 `GetRoutes()`函数替代。
+</span></span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 它返回基于接口的切片而不是实际切片，
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 以便在上下文（请求状态）和构建的应用程序之间安全提取。
+</span></span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 同时请看 `GetRouteReadOnly` 。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">api</span> <span class="o">*</span><span class="nx">APIBuilder</span><span class="p">)</span> <span class="nf">GetRoutesReadOnly</span><span class="p">()</span> <span class="p">[]</span><span class="nx">context</span><span class="p">.</span><span class="nx">RouteReadOnly</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">routes</span> <span class="o">:=</span> <span class="nx">api</span><span class="p">.</span><span class="nf">GetRoutes</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">readOnlyRoutes</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">context</span><span class="p">.</span><span class="nx">RouteReadOnly</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">routes</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">r</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">routes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">readOnlyRoutes</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">routeReadOnlyWrapper</span><span class="p">{</span><span class="nx">r</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">readOnlyRoutes</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从以上源码中可以看出， <code>GetRouteReadOnly</code> 和 <code>GetRoutes()</code> 都满足我们的使用需求。我们使用 <code>GetRoutesReadOnly()</code>实现。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">app</span> <span class="p">=</span> <span class="nf">NewApp</span><span class="p">()</span> <span class="c1">// 初始化app
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">routes</span> <span class="o">:=</span> <span class="nx">app</span><span class="p">.</span><span class="nf">GetRoutesReadOnly</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 保存数据到数据库，详细代码查看 https://github.com/snowlyg/IrisAdminApi 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">...</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>这里会有个小问题，就是数据没有问题，但是访问类似编辑，更新等后面带有 id 会变化的接口，会出现 403 返回。可是明明已经都有权限数据了，而且其他接口也能正常访问，为什么会这样？
+检查发现原因是：生成的（权限）策略数据是这样的 <code>/v1/admin/users/{id:uint}</code></li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" decoding="async"
+         src="mLTP2qruGn.png"
+         alt="image.png"
+         title="mLTP2qruGn.png"
+    /></p>
+<p>实际上 casbin 匹配的权限应该是这样的 <code>/dataset1/*</code>，具体内容查看 <a href="https://github.com/iris-contrib/middleware/blob/master/casbin/_examples/middleware/casbinpolicy.csv" title="casbinpolicy.csv" target="_blank" rel="noopener noreffer">casbinpolicy.csv</a></p>
+<ul>
+<li>这时候有两种解决思路：
+<ul>
+<li>修改自动生成权限的逻辑，将 <code>{id:uint}</code>，替换成 <code>*</code>。</li>
+<li>修改 casbin 的匹配逻辑。
+因为第一种比较简单，这里主要讨论第二种方式，既然要修改 casbin 的匹配逻辑。首先要了解它的原理，很不巧和很多刚接触 casbin 的朋友一样，我对这些也不是很了解。这时候我门只能通过查看文档，以及源码来更深入的了解它。</li>
+</ul>
+</li>
+<li>点开文档 <a href="https://casbin.org/docs/zh-CN/syntax-for-models#matchers" title="matchers" target="_blank" rel="noopener noreffer">matchers</a> 我查找到 matachers 部分适用于定于匹配规则的，但是这里没有更深层的解释要如何定义。</li>
+<li>继续查看文档 <a href="https://casbin.org/docs/zh-CN/function" title="function" target="_blank" rel="noopener noreffer">function</a>，在这里我们能够到不同的匹配模式，甚至我们可以自定义匹配函数。而且我们发现其中有两种匹配方式可能会满足我们，<code>keyMatch3</code>，<code>keyMatch4</code>都能匹配 <code>{}</code> 类似的表达式 。</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" decoding="async"
+         src="BjkjrOeOYx.png"
+         alt="image.png"
+         title="BjkjrOeOYx.png"
+    /></p>
+<p>那么我们来尝试修改 <code>examples/rbac_model.conf</code> 这个文件的内容，将 <code>keyMatch</code>改为<code>keyMatch3</code>，重启项目之后访问编辑相关接口，发现问题已经解决。（发现使用 <code>keyMatch4</code>，同样有效）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">matchers</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nx">m</span> <span class="p">=</span> <span class="nf">g</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">sub</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">sub</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nf">keyMatch3</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">obj</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">act</span> <span class="o">==</span> <span class="nx">p</span><span class="p">.</span><span class="nx">act</span> <span class="o">||</span> <span class="nx">p</span><span class="p">.</span><span class="nx">act</span> <span class="o">==</span> <span class="s">&#34;*&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>还有另外一种方式：用来修改默认的匹配。
+<ul>
+<li>首先修改 <code>examples/rbac_model.conf</code> 这个文件：去除中间的 <code>&amp;&amp; keyMatch3(r.obj, p.obj)</code> 让 casbin 使用默认的匹配规则（默认为 <code>keyMatch</code>）。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">matchers</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nx">m</span> <span class="p">=</span> <span class="nf">g</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">sub</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">sub</span><span class="p">)</span>  <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">act</span> <span class="o">==</span> <span class="nx">p</span><span class="p">.</span><span class="nx">act</span> <span class="o">||</span> <span class="nx">p</span><span class="p">.</span><span class="nx">act</span> <span class="o">==</span> <span class="s">&#34;*&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>然后在  <code>models/base.go</code> 文件增加代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">defaultrolemanager</span> <span class="s">&#34;github.com/casbin/casbin/v2/rbac/default-role-manager&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/casbin/casbin/v2/util&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">......</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Enforcer</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">casbin</span><span class="p">.</span><span class="nf">NewEnforcer</span><span class="p">(</span><span class="s">&#34;examples/rbac_model.conf&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 修改默认匹配为 KeyMatch3
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">rm</span> <span class="o">:=</span> <span class="nx">defaultrolemanager</span><span class="p">.</span><span class="nf">NewRoleManager</span><span class="p">(</span><span class="mi">10</span><span class="p">).(</span><span class="o">*</span><span class="nx">defaultrolemanager</span><span class="p">.</span><span class="nx">RoleManager</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">rm</span><span class="p">.</span><span class="nf">AddMatchingFunc</span><span class="p">(</span><span class="s">&#34;KeyMatch3&#34;</span><span class="p">,</span> <span class="nx">util</span><span class="p">.</span><span class="nx">KeyMatch3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Enforcer</span><span class="p">.</span><span class="nf">LoadPolicy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">......</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此方法和上面直接修改 <code>examples/rbac_model.conf</code> 文件的方式更复杂一些，这里只是介绍一下提供另一种思路。</p>
+<blockquote>
+<p>写完了，感觉有点乱。主要还是讲述我解决需求和问题的一个思路。希望对你有帮助。
+还是那句话：能力有限，不喜勿喷。</p>
+</blockquote></div>
+
+            <div class="post" style="padding-top: 0">
+
+
+<div class="post-share"><div class="share-link">
+        <a class="share-icon share-twitter" href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://blog.snowlyg.com/iris-go-api-2/" data-title="iris &#43; casbin 从陌生到学会使用的过程" data-via="ld_snowlyg" data-hashtags="Golang,IRIS,Api"><span class="svg-social-icon icon-twitter"></span></a>
+    </div><div class="share-link">
+        <a class="share-icon share-facebook" href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://blog.snowlyg.com/iris-go-api-2/" data-hashtag="Golang"><span class="svg-social-icon icon-facebook"></span></a>
+    </div><div class="share-link">
+        <a class="share-icon share-tumblr" href="javascript:void(0);" title="分享到 Tumblr" data-sharer="tumblr" data-url="https://blog.snowlyg.com/iris-go-api-2/" data-title="iris &#43; casbin 从陌生到学会使用的过程" data-caption="简单介绍iris&#43;casbin从陌生到学会使用的过程详细" data-tags="Golang,IRIS,Api"><span class="svg-social-icon icon-tumblr"></span></a>
+    </div><div class="share-link">
+        <a class="share-icon share-reddit" href="javascript:void(0);" title="分享到 Reddit" data-sharer="reddit" data-url="https://blog.snowlyg.com/iris-go-api-2/"><span class="svg-social-icon icon-reddit"></span></a>
+    </div><div class="share-link">
+        <a class="share-icon share-line" href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://blog.snowlyg.com/iris-go-api-2/" data-title="iris &#43; casbin 从陌生到学会使用的过程"><span class="svg-social-icon icon-line"></span></a>
+</div><div class="share-link">
+        <a class="share-icon share-weibo" href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://blog.snowlyg.com/iris-go-api-2/" data-title="iris &#43; casbin 从陌生到学会使用的过程"><span class="svg-social-icon icon-weibo"></span></a>
+    </div><div class="share-link">
+    <a class="share-icon share-hackernews" href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="https://blog.snowlyg.com/iris-go-api-2/" data-title="iris &#43; casbin 从陌生到学会使用的过程"><span class="svg-social-icon icon-hacker-news"></span></a>
+    </div></div>
+
+<div class="footer-post-author">
+    <div class="author-avatar"><a href="https://blog.snowlyg.com" target="_blank"><img alt="努力决定一切，不向命运屈服" src="/images/avatar.jpg"></a></div>
+    <div class="author-info">
+        <div class="name"><a href="https://blog.snowlyg.com" target="_blank"></a></div>
+        <div class="number-posts">努力决定一切，不向命运屈服</span></div>
+    </div>
+</div><div class="post-tags"><a href="/tags/golang/" class="tag">Golang</a><a href="/tags/iris/" class="tag">IRIS</a><a href="/tags/api/" class="tag">Api</a></div></div>
+        </div>
+    <div id="toc-final"></div>
+    </article><div class="page single comments content-block-position"><div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></div></div>
+
+</main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="svg-icon icon-copyright"></i><span>2021 - 2022</span><span class="author">&nbsp;<a href="https://blog.snowlyg.com" target="_blank">snowlyg</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span><span class="icp-splitter">&nbsp;|&nbsp;</span><br class="icp-br"/>
+                    <span class="icp"><a rel="license external nofollow noopener noreffer" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">湘ICP备20005575号-1</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="svg-icon icon-arrow-up"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="svg-icon icon-comments-fixed"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"Bzzp9SE8jvtyPoudc9UXWQLE-gzGzoHsz","appKey":"BYlSoS9GSlgSKdOvywjur0rC","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://bzzp9se8.lc-cn-n1-shared.com","visitor":true}},"search":{"algoliaAppID":"ZNPQ5FHOU5","algoliaIndex":"blog","algoliaSearchKey":"16f4bf5cec120b8b84a80c03088bf453","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js"></script></body>
+</html>
