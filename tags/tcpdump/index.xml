@@ -1,14 +1,23 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>tcpdump - 标签 - SNOWLYG的技术分享</title>
-        <link>https://snowlyg.github.io/tags/tcpdump/</link>
-        <description>tcpdump - 标签 - SNOWLYG的技术分享</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 13 Nov 2022 21:33:30 &#43;0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/tcpdump/" rel="self" type="application/rss+xml" /><item>
-    <title>IPTV电信电视频道列表的抓取教程</title>
-    <link>https://snowlyg.github.io/iptv/</link>
-    <pubDate>Sun, 13 Nov 2022 21:33:30 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/iptv/</guid>
-    <description><![CDATA[IPTV电信电视频道列表的抓取教程]]></description>
-</item></channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tcpdump on Snowlyg&#39;s Blog</title>
+    <link>https://snowlyg.github.io/tags/tcpdump/</link>
+    <description>Recent content in Tcpdump on Snowlyg&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 13 Nov 2022 21:33:30 +0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/tcpdump/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IPTV电信电视频道列表的抓取教程</title>
+      <link>https://snowlyg.github.io/posts/iptv/</link>
+      <pubDate>Sun, 13 Nov 2022 21:33:30 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/iptv/</guid>
+      
+        <description>IPTV电信电视频道列表的抓取教程</description>
+      
+    </item>
+    
+  </channel>
 </rss>

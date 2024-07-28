@@ -1,0 +1,861 @@
+<!doctype html>
+<html
+  dir="ltr"
+  lang="zh-cn"
+  data-theme=""
+  
+    class="html theme--light"
+  
+><head>
+  <meta charset="utf-8" />
+  <title>
+    
+      
+        不同语言之间数据压缩/解压实现 |
+      Snowlyg
+
+  </title>
+
+  <meta name="generator" content="Hugo 0.129.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Snowlyg" />
+  <meta
+    name="description"
+    content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。"
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.8d4fad7e6916ad2e291e8d97ada157c70350d6d7150fea137e7243340967befb.css"
+      integrity="sha256-jU&#43;tfmkWrS4pHo2XraFXxwNQ1tcVD&#43;oTfnJDNAlnvvs="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.73ccfdf28df555e11009c13c20ced067af3cb021504cba43644c705930428b00.css"
+    integrity="sha256-c8z98o31VeEQCcE8IM7QZ688sCFQTLpDZExwWTBCiwA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.137b1cf3cea9a8adb7884343a9a5ddddf4280f59153f74dc782fb7f7bf0d0519.css"
+    integrity="sha256-E3sc886pqK23iENDqaXd3fQoD1kVP3TceC&#43;3978NBRk="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.e65dc5b48fb5f39b142360c57c3a215744c94e56c755c929cc3e88fe12aab4d3.css"
+    integrity="sha256-5l3FtI&#43;185sUI2DFfDohV0TJTlbHVckpzD6I/hKqtNM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/regular.min.6f4f16d58da1c82c0c3a3436e021a3d39b4742f741192c546e73e947eacfd92f.css"
+    integrity="sha256-b08W1Y2hyCwMOjQ24CGj05tHQvdBGSxUbnPpR&#43;rP2S8="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.e10425ad768bc98ff1fb272a0ac8420f9d1ba22f0612c08ff1010c95080ffe7e.css"
+    integrity="sha256-4QQlrXaLyY/x&#43;ycqCshCD50boi8GEsCP8QEMlQgP/n4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://snowlyg.github.io/posts/clizb/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
+      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
+      crossorigin="anonymous"
+    ></script>
+  
+
+  
+
+  
+
+
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://snowlyg.github.io/posts/clizb/featured-image.jpg">
+  <meta name="twitter:title" content="不同语言之间数据压缩/解压实现">
+  <meta name="twitter:description" content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。">
+
+
+
+  
+  <meta property="og:url" content="https://snowlyg.github.io/posts/clizb/">
+  <meta property="og:site_name" content="Snowlyg&#39;s Blog">
+  <meta property="og:title" content="不同语言之间数据压缩/解压实现">
+  <meta property="og:description" content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-04-23T20:41:20+08:00">
+    <meta property="article:modified_time" content="2021-04-23T20:41:20+08:00">
+    <meta property="article:tag" content="Golang">
+    <meta property="article:tag" content="PHP">
+    <meta property="article:tag" content="Nodejs">
+    <meta property="article:tag" content="Zlib">
+    <meta property="article:tag" content="Compress">
+    <meta property="article:tag" content="Decompress">
+    <meta property="og:image" content="https://snowlyg.github.io/posts/clizb/featured-image.jpg">
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "posts",
+        "name": "不同语言之间数据压缩\/解压实现",
+        "headline": "不同语言之间数据压缩\/解压实现",
+        "alternativeHeadline": "",
+        "description": "
+      数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩\/解压实现成为了可能。
+
+
+    ",
+        "inLanguage": "zh-cn",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/snowlyg.github.io\/posts\/clizb\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-04-23T20:41:20.00Z",
+        "datePublished": "2021-04-23T20:41:20.00Z",
+        "dateModified": "2021-04-23T20:41:20.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "snowlyg",
+            "url": "https://snowlyg.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/snowlyg.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+        
+        "https://snowlyg.github.io/images/site-feature-image.png"
+
+
+      
+      ]
+
+    ,
+        "url" : "https:\/\/snowlyg.github.io\/posts\/clizb\/",
+        "wordCount" : "1265",
+        "genre" : [ 
+      
+      "Golang"
+
+    
+      
+        ,
+
+      
+      "PHP"
+
+    
+      
+        ,
+
+      
+      "Nodejs"
+
+    ],
+        "keywords" : [ 
+      
+      "Golang"
+
+    
+      
+        ,
+
+      
+      "PHP"
+
+    
+      
+        ,
+
+      
+      "Nodejs"
+
+    
+      
+        ,
+
+      
+      "zlib"
+
+    
+      
+        ,
+
+      
+      "compress"
+
+    
+      
+        ,
+
+      
+      "decompress"
+
+    ]
+    }
+  </script>
+
+
+</head>
+<body class="body">
+    <div class="wrapper">
+      <aside
+        
+          class="wrapper__sidebar"
+        
+      ><div
+  class="sidebar
+    animated fadeInDown
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="https://avatars.githubusercontent.com/u/45998760?v=4"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">I&#39;m Snowlyg</a>
+        </div>
+      
+      <div class="sidebar__introduction-description">
+        <p>努力决定一切，不向命运屈服</p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://www.linkedin.com/in/dan-luo-3704a21a4/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="Linkedin"
+            title="Linkedin"
+          >
+            <i class="fa-brands fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://github.com/snowlyg/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <i class="fa-brands fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://x.com/rodin990"
+            target="_blank"
+            rel="noopener me"
+            aria-label="X"
+            title="X"
+          >
+            <i class="fa-brands fa-x fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="mailto:brendenaudrina6287@gmail.com"
+            target="_blank"
+            rel="noopener me"
+            aria-label="e-mail"
+            title="e-mail"
+          >
+            <i class="fa-solid fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Snowlyg 2020-2021
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main"
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/posts/"
+              
+              title="文章"
+              >文章</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/tags/"
+              
+              title="标签"
+              >标签</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/categories/"
+              
+              title="分类"
+              >分类</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://www.github.com/snowlyg/iris/wiki"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="go-iris中文文档"
+              >go-iris中文文档</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://brendenaudrina6287.gitbook.io/qor-doc-zh"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="qor中文文档"
+              >qor中文文档</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://www.github.com/snowlyg"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="GITHUB"
+              >GITHUB</a
+            >
+          </li>
+        
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+    "
+  >
+    
+    <div class="post__content">
+      
+        <h1>不同语言之间数据压缩/解压实现</h1>
+      
+      <p>文章源码地址：<a href="https://www.github.com/snowlyg/learns">https://www.github.com/snowlyg/learns</a></p>
+<h1 id="不同语言之间数据压缩解压实现">不同语言之间数据压缩/解压实现</h1>
+<ul>
+<li>正常的时候，使用一种编程语言实现数据的压缩、解压都十分简单。</li>
+</ul>
+<h4 id="golang-有如下-5-个基础包">golang 有如下 5 个基础包</h4>
+<ul>
+<li><a href="https://golang.org/pkg/compress/gzip">compress/gzip</a></li>
+<li><a href="https://golang.org/pkg/compress/bzip2">compress/bzip2</a></li>
+<li><a href="https://golang.org/pkg/compress/flate">compress/flate</a></li>
+<li><a href="https://golang.org/pkg/compress/lzw">compress/lzw</a></li>
+<li><a href="https://golang.org/pkg/compress/zlib">compress/zlib</a></li>
+<li></li>
+</ul>
+<h4 id="golang-第三方包使用-c-的-zlib-包本次主要使用这个">golang 第三方包使用 c++ 的 zlib 包，本次主要使用这个。</h4>
+<ul>
+<li><a href="https://www.github.com/chindeo/czlib">chindeo/czlib</a></li>
+</ul>
+<h4 id="php-有如下-6-个压缩解压格式">php 有如下 6 个压缩、解压格式</h4>
+<ul>
+<li><a href="https://www.php.net/manual/en/book.bzip2.php">bzip2</a></li>
+<li><a href="https://www.php.net/manual/en/book.lzf.php">lzf</a></li>
+<li><a href="https://www.php.net/manual/en/book.phar.php">phar</a></li>
+<li><a href="https://www.php.net/manual/en/book.rar.php">rar</a></li>
+<li><a href="https://www.php.net/manual/en/book.zip.php">zip</a></li>
+<li><a href="https://www.php.net/manual/en/book.zlib.php">zlib</a></li>
+</ul>
+<h4 id="nodejs-主要使用-zlib-压缩解压格式">nodejs 主要使用 zlib 压缩、解压格式</h4>
+<ul>
+<li><a href="http://nodejs.cn/api/zlib.html">zlib</a></li>
+</ul>
+<p>三种语言都有 <code>zlib</code> 方式的压缩、解压方式，这样选择 <code>zlib</code> 方式来做不同编程语言间的压缩，解压方式比较合适。</p>
+<h4 id="datajson-文件">data.json 文件</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;fdafddsf&#34;</span><span class="p">:</span><span class="s2">&#34;e324r324e324e&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;fd111afddsf&#34;</span><span class="p">:</span><span class="s2">&#34;e324r324e324e&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="golang-实现-zlib">golang 实现 <code>zlib</code></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;bytes&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;io&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;os&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;path&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/chindeo/czlib&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 提取文件内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;./data.json&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;os open %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 压缩内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">b</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">w</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">czlib</span><span class="p">.</span><span class="nf">NewWriterLevel</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">b</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;flate new writer %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">w</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;zlib new reader %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">w</span><span class="p">.</span><span class="nf">Flush</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 将压缩后内容写入文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nf">writeBytes</span><span class="p">(</span><span class="s">&#34;./data.zip&#34;</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;WriteBytes %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 解压内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">r</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">czlib</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;NewReader %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;io copy %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">writeBytes</span><span class="p">(</span><span class="nx">filePath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">os</span><span class="p">.</span><span class="nf">MkdirAll</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nf">Dir</span><span class="p">(</span><span class="nx">filePath</span><span class="p">),</span> <span class="nx">os</span><span class="p">.</span><span class="nx">ModePerm</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fw</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">fw</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">fw</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li>执行 <code>go run main.go</code> 得到 <code>data.zip</code> 文件</li>
+</ul>
+<h4 id="nodejs-实现-zlib">nodejs 实现 <code>zlib</code></h4>
+<ul>
+<li>compress.js</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">createDeflate</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;zlib&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">pipeline</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;stream&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createReadStream</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createWriteStream</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">gzip</span> <span class="o">=</span> <span class="nx">createDeflate</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">source</span> <span class="o">=</span> <span class="nx">createReadStream</span><span class="p">(</span><span class="s1">&#39;data.json&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">destination</span> <span class="o">=</span> <span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">&#39;data.zip&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">pipeline</span><span class="p">(</span><span class="nx">source</span><span class="p">,</span> <span class="nx">gzip</span><span class="p">,</span> <span class="nx">destination</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;发生错误:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exitCode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><ul>
+<li>decompress.js</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">createInflate</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;zlib&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">pipeline</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;stream&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createReadStream</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createWriteStream</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">gunzip</span> <span class="o">=</span> <span class="nx">createInflate</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">sourceUnzip</span> <span class="o">=</span> <span class="nx">createReadStream</span><span class="p">(</span><span class="s1">&#39;data.zip&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">destinationUnzip</span> <span class="o">=</span>  <span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">pipeline</span><span class="p">(</span><span class="nx">sourceUnzip</span><span class="p">,</span> <span class="nx">gunzip</span><span class="p">,</span> <span class="nx">destinationUnzip</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;发生错误:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exitCode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><ul>
+<li>执行 <code>node compress.js</code> 得到 <code>data.zip</code> 文件</li>
+<li>执行 <code>node decompress.js</code> 解压 <code>data.zip</code>  文件</li>
+</ul>
+<h4 id="php-实现-zlib">php 实现 <code>zlib</code></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Perform GZIP compression:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$compressed</span> <span class="o">=</span> <span class="nx">file_get_contents</span><span class="p">(</span><span class="s2">&#34;data.json&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$deflateContext</span> <span class="o">=</span> <span class="nx">deflate_init</span><span class="p">(</span><span class="nx">ZLIB_ENCODING_DEFLATE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$compressed</span> <span class="o">=</span> <span class="nx">deflate_add</span><span class="p">(</span><span class="nv">$deflateContext</span><span class="p">,</span> <span class="nv">$compressed</span><span class="p">,</span> <span class="nx">ZLIB_NO_FLUSH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$compressed</span> <span class="o">.=</span> <span class="nx">deflate_add</span><span class="p">(</span><span class="nv">$deflateContext</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="nx">ZLIB_FINISH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="s2">&#34;data.zip&#34;</span><span class="p">,</span><span class="nv">$compressed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Perform GZIP decompression:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$inflateContext</span> <span class="o">=</span> <span class="nx">inflate_init</span><span class="p">(</span><span class="nx">ZLIB_ENCODING_DEFLATE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$uncompressed</span> <span class="o">=</span> <span class="nx">inflate_add</span><span class="p">(</span><span class="nv">$inflateContext</span><span class="p">,</span> <span class="nv">$compressed</span><span class="p">,</span> <span class="nx">ZLIB_NO_FLUSH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$uncompressed</span> <span class="o">.=</span> <span class="nx">inflate_add</span><span class="p">(</span><span class="nv">$inflateContext</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="nx">ZLIB_FINISH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$uncompressed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">?&gt;
+</span></span></span></code></pre></div><ul>
+<li>执行 <code>php index.php</code> 得到 <code>data.zip</code> 文件</li>
+</ul>
+<p>目前已经实现了三种语言各自的压缩，解压数据。
+因为实现比较简单就没有贴语言间交叉压缩，解压数据的代码了。具体源码参考在：<a href="https://github.com/snowlyg/learns/tree/master/zlib">learns/zlib</a>
+·</p>
+<h4 id="php-解压-go-压缩文件">PHP 解压 GO 压缩文件</h4>
+<ul>
+<li>decompress_with_go_compress .php</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Perform GZIP compression:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$compressed</span> <span class="o">=</span> <span class="nx">file_get_contents</span><span class="p">(</span><span class="s2">&#34;../go/data.zip&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$inflateContext</span> <span class="o">=</span> <span class="nx">inflate_init</span><span class="p">(</span><span class="nx">ZLIB_ENCODING_DEFLATE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$uncompressed</span> <span class="o">=</span> <span class="nx">inflate_add</span><span class="p">(</span><span class="nv">$inflateContext</span><span class="p">,</span> <span class="nv">$compressed</span><span class="p">,</span> <span class="nx">ZLIB_NO_FLUSH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$uncompressed</span> <span class="o">.=</span> <span class="nx">inflate_add</span><span class="p">(</span><span class="nv">$inflateContext</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="nx">ZLIB_FINISH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="s2">&#34;go_data.json&#34;</span><span class="p">,</span><span class="nv">$uncompressed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$uncompressed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></div><h4 id="php-解压-nodejs-压缩文件">PHP 解压 NODEJS 压缩文件</h4>
+<ul>
+<li>decompress_with_nodejs_compress .php</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Perform GZIP compression:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$compressed</span> <span class="o">=</span> <span class="nx">file_get_contents</span><span class="p">(</span><span class="s2">&#34;../nodejs/data.zip&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$inflateContext</span> <span class="o">=</span> <span class="nx">inflate_init</span><span class="p">(</span><span class="nx">ZLIB_ENCODING_DEFLATE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$uncompressed</span> <span class="o">=</span> <span class="nx">inflate_add</span><span class="p">(</span><span class="nv">$inflateContext</span><span class="p">,</span> <span class="nv">$compressed</span><span class="p">,</span> <span class="nx">ZLIB_NO_FLUSH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$uncompressed</span> <span class="o">.=</span> <span class="nx">inflate_add</span><span class="p">(</span><span class="nv">$inflateContext</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="nx">ZLIB_FINISH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="s2">&#34;go_data.json&#34;</span><span class="p">,</span><span class="nv">$uncompressed</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$uncompressed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></div><h4 id="nodejs-解压-php-压缩文件">NODEJS 解压 PHP 压缩文件</h4>
+<ul>
+<li>decompress_with_php_compress.js</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">createInflate</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;zlib&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">pipeline</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;stream&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createReadStream</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createWriteStream</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">gunzip</span> <span class="o">=</span> <span class="nx">createInflate</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">sourceUnzip</span> <span class="o">=</span> <span class="nx">createReadStream</span><span class="p">(</span><span class="s1">&#39;../php/data.zip&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">destinationUnzip</span> <span class="o">=</span>  <span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">&#39;php_data.txt&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">pipeline</span><span class="p">(</span><span class="nx">sourceUnzip</span><span class="p">,</span> <span class="nx">gunzip</span><span class="p">,</span> <span class="nx">destinationUnzip</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;发生错误:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exitCode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><h4 id="nodejs-解压-go-压缩文件">NODEJS 解压 GO 压缩文件</h4>
+<ul>
+<li>decompress_with_go_compress.js</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">createInflate</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;zlib&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">pipeline</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;stream&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createReadStream</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createWriteStream</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">gunzip</span> <span class="o">=</span> <span class="nx">createInflate</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// console.log(gunzip)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">sourceUnzip</span> <span class="o">=</span> <span class="nx">createReadStream</span><span class="p">(</span><span class="s1">&#39;../go/data.zip&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">destinationUnzip</span> <span class="o">=</span>  <span class="nx">createWriteStream</span><span class="p">(</span><span class="s1">&#39;go_data.txt&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">pipeline</span><span class="p">(</span><span class="nx">sourceUnzip</span><span class="p">,</span> <span class="nx">gunzip</span><span class="p">,</span> <span class="nx">destinationUnzip</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;发生错误:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exitCode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><h4 id="go-解压-php-压缩文件">GO 解压 PHP 压缩文件</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;io&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;os&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/chindeo/czlib&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 提取文件内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;../php/data.zip&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;os open %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 解压内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">r</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">czlib</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;NewReader %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;io copy %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="go-解压-nodejs-压缩文件">GO 解压 NODEJS 压缩文件</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;io&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;os&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/chindeo/czlib&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 提取文件内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;../nodejs/data.zip&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;os open %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 解压内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">r</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">czlib</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;NewReader %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;io copy %v\n&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这次 <code>go</code> 使用的一个第三方包 <a href="https://www.github.com/chindeo/czlib">chindeo/czlib</a>，这个包参考了一个开源库修改而来，主要是调用 c++ 的 <a href="http://www.zlib.net/zlib.html">zlib</a> 库。相对于官方的几个压缩库，这个库可以设置更多的参数，能够更方便的兼容其他语言的压缩解压方法。</p>
+<p><strong>特别是在其他语言使用的压缩解压方法因为一些原因已经固定下来不太好修改的情况下，往往需要其他语言修改对应的参数去匹配相应的压缩设置</strong></p></div>
+    <div class="post__footer">
+      
+        <span><a class="category" href="/categories/golang/">Golang</a><a class="category" href="/categories/php/">PHP</a><a class="category" href="/categories/nodejs/">Nodejs</a></span>
+
+
+      
+
+      
+        <span><a class="tag" href="/tags/golang/">Golang</a><a class="tag" href="/tags/php/">PHP</a><a class="tag" href="/tags/nodejs/">Nodejs</a><a class="tag" href="/tags/zlib/">zlib</a><a class="tag" href="/tags/compress/">compress</a><a class="tag" href="/tags/decompress/">decompress</a></span>
+
+
+      
+    </div>
+
+    
+  </div>
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Snowlyg 2020-2021
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

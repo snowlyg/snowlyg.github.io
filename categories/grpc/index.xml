@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Grpc on Snowlyg&#39;s Blog</title>
+    <link>http://localhost:1313/categories/grpc/</link>
+    <description>Recent content in Grpc on Snowlyg&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 28 Jul 2024 18:35:51 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/grpc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 golang 实现 grpc 信令服务基于 webrtc 的 android 应用</title>
+      <link>http://localhost:1313/posts/webrtc/golang-grpc-webrtc-android/</link>
+      <pubDate>Sun, 28 Jul 2024 18:35:51 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/webrtc/golang-grpc-webrtc-android/</guid>
+      
+        <description>使用 Golang 实现 gRPC 信令服务的 WebRTC 应用的技术整合。图像应该包含象征实时通信、服务器-客户端交互和 Go 编程语言</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,14 +1,23 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>zlib - 标签 - SNOWLYG的技术分享</title>
-        <link>https://snowlyg.github.io/tags/zlib/</link>
-        <description>zlib - 标签 - SNOWLYG的技术分享</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 23 Apr 2021 20:41:20 &#43;0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/zlib/" rel="self" type="application/rss+xml" /><item>
-    <title>不同语言之间数据压缩/解压实现</title>
-    <link>https://snowlyg.github.io/clizb/</link>
-    <pubDate>Fri, 23 Apr 2021 20:41:20 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/clizb/</guid>
-    <description><![CDATA[数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。]]></description>
-</item></channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Zlib on Snowlyg&#39;s Blog</title>
+    <link>https://snowlyg.github.io/tags/zlib/</link>
+    <description>Recent content in Zlib on Snowlyg&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 23 Apr 2021 20:41:20 +0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/zlib/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>不同语言之间数据压缩/解压实现</title>
+      <link>https://snowlyg.github.io/posts/clizb/</link>
+      <pubDate>Fri, 23 Apr 2021 20:41:20 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/clizb/</guid>
+      
+        <description>数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。</description>
+      
+    </item>
+    
+  </channel>
 </rss>

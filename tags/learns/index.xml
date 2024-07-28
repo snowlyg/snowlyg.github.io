@@ -1,35 +1,56 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>learns - 标签 - SNOWLYG的技术分享</title>
-        <link>https://snowlyg.github.io/tags/learns/</link>
-        <description>learns - 标签 - SNOWLYG的技术分享</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 26 Mar 2021 20:02:48 &#43;0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/learns/" rel="self" type="application/rss+xml" /><item>
-    <title>学习篇-并发通道</title>
-    <link>https://snowlyg.github.io/channel/</link>
-    <pubDate>Fri, 26 Mar 2021 20:02:48 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/channel/</guid>
-    <description><![CDATA[并发通道篇-控制 windows 服务]]></description>
-</item><item>
-    <title>学习篇-进阶</title>
-    <link>https://snowlyg.github.io/advance/</link>
-    <pubDate>Fri, 26 Mar 2021 20:02:48 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/advance/</guid>
-    <description><![CDATA[进阶篇-注册 windows 服务]]></description>
-</item><item>
-    <title>学习篇-基础</title>
-    <link>https://snowlyg.github.io/base/</link>
-    <pubDate>Mon, 22 Mar 2021 21:17:27 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/base/</guid>
-    <description><![CDATA[基础篇-编写一个简单的go程序]]></description>
-</item><item>
-    <title>学习篇-前言</title>
-    <link>https://snowlyg.github.io/start/</link>
-    <pubDate>Fri, 19 Mar 2021 22:49:30 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/start/</guid>
-    <description><![CDATA[前言篇-随便写一些闲话]]></description>
-</item></channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Learns on Snowlyg&#39;s Blog</title>
+    <link>https://snowlyg.github.io/tags/learns/</link>
+    <description>Recent content in Learns on Snowlyg&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 26 Mar 2021 20:02:48 +0800</lastBuildDate><atom:link href="https://snowlyg.github.io/tags/learns/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>学习篇-并发通道</title>
+      <link>https://snowlyg.github.io/posts/learns/channel/</link>
+      <pubDate>Fri, 26 Mar 2021 20:02:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/channel/</guid>
+      
+        <description>并发通道篇-控制 windows 服务</description>
+      
+    </item>
+    
+    <item>
+      <title>学习篇-进阶</title>
+      <link>https://snowlyg.github.io/posts/learns/advance/</link>
+      <pubDate>Fri, 26 Mar 2021 20:02:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/advance/</guid>
+      
+        <description>进阶篇-注册 windows 服务</description>
+      
+    </item>
+    
+    <item>
+      <title>学习篇-基础</title>
+      <link>https://snowlyg.github.io/posts/learns/base/</link>
+      <pubDate>Mon, 22 Mar 2021 21:17:27 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/base/</guid>
+      
+        <description>基础篇-编写一个简单的go程序</description>
+      
+    </item>
+    
+    <item>
+      <title>学习篇-前言</title>
+      <link>https://snowlyg.github.io/posts/learns/start/</link>
+      <pubDate>Fri, 19 Mar 2021 22:49:30 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/start/</guid>
+      
+        <description>前言篇-随便写一些闲话</description>
+      
+    </item>
+    
+  </channel>
 </rss>

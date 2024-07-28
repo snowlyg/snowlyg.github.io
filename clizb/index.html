@@ -1,260 +1,509 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noodp"/><title>不同语言之间数据压缩/解压实现 | </title><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://snowlyg.github.io/clizb/featured-image.jpg"/>
-<meta name="twitter:title" content="不同语言之间数据压缩/解压实现"/>
-<meta name="twitter:description" content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。"/><meta name="twitter:creator" content="@ld_snowlyg"/><meta name="Description" content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。"><meta property="og:title" content="不同语言之间数据压缩/解压实现" />
-<meta property="og:description" content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://snowlyg.github.io/clizb/" /><meta property="og:image" content="https://snowlyg.github.io/clizb/featured-image.jpg"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-04-23T20:41:20+08:00" />
-<meta property="article:modified_time" content="2021-04-23T20:41:20+08:00" />
+<!doctype html>
+<html
+  dir="ltr"
+  lang="zh-cn"
+  data-theme=""
+  
+    class="html theme--light"
+  
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <title>
+    
+      
+        不同语言之间数据压缩/解压实现 |
+      Jane Doe
 
-<meta name="application-name" content="SNOWLYG">
-<meta name="apple-mobile-web-app-title" content="SNOWLYG"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-        <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-        <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://snowlyg.github.io/clizb/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+  </title>
+
+  <meta name="generator" content="Hugo 0.129.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Jane Doe" />
+  <meta
+    name="description"
+    content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。"
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.8d4fad7e6916ad2e291e8d97ada157c70350d6d7150fea137e7243340967befb.css"
+      integrity="sha256-jU&#43;tfmkWrS4pHo2XraFXxwNQ1tcVD&#43;oTfnJDNAlnvvs="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.73ccfdf28df555e11009c13c20ced067af3cb021504cba43644c705930428b00.css"
+    integrity="sha256-c8z98o31VeEQCcE8IM7QZ688sCFQTLpDZExwWTBCiwA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.137b1cf3cea9a8adb7884343a9a5ddddf4280f59153f74dc782fb7f7bf0d0519.css"
+    integrity="sha256-E3sc886pqK23iENDqaXd3fQoD1kVP3TceC&#43;3978NBRk="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.e65dc5b48fb5f39b142360c57c3a215744c94e56c755c929cc3e88fe12aab4d3.css"
+    integrity="sha256-5l3FtI&#43;185sUI2DFfDohV0TJTlbHVckpzD6I/hKqtNM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/regular.min.6f4f16d58da1c82c0c3a3436e021a3d39b4742f741192c546e73e947eacfd92f.css"
+    integrity="sha256-b08W1Y2hyCwMOjQ24CGj05tHQvdBGSxUbnPpR&#43;rP2S8="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.e10425ad768bc98ff1fb272a0ac8420f9d1ba22f0612c08ff1010c95080ffe7e.css"
+    integrity="sha256-4QQlrXaLyY/x&#43;ycqCshCD50boi8GEsCP8QEMlQgP/n4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="http://localhost:1313/clizb/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
+      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
+      crossorigin="anonymous"
+    ></script>
+  
+
+  
+
+  
+
+
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/clizb/featured-image.jpg">
+  <meta name="twitter:title" content="不同语言之间数据压缩/解压实现">
+  <meta name="twitter:description" content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。">
+      <meta name="twitter:site" content="@ld_snowlyg">
+
+
+
+  
+  <meta property="og:url" content="http://localhost:1313/clizb/">
+  <meta property="og:site_name" content="Snowlyg&#39;s Blog">
+  <meta property="og:title" content="不同语言之间数据压缩/解压实现">
+  <meta property="og:description" content="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-04-23T20:41:20+08:00">
+    <meta property="article:modified_time" content="2021-04-23T20:41:20+08:00">
+    <meta property="article:tag" content="Golang">
+    <meta property="article:tag" content="PHP">
+    <meta property="article:tag" content="Nodejs">
+    <meta property="article:tag" content="Zlib">
+    <meta property="article:tag" content="Compress">
+    <meta property="article:tag" content="Decompress">
+    <meta property="og:image" content="http://localhost:1313/clizb/featured-image.jpg">
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "不同语言之间数据压缩/解压实现",
+        "articleSection": "posts",
+        "name": "不同语言之间数据压缩\/解压实现",
+        "headline": "不同语言之间数据压缩\/解压实现",
+        "alternativeHeadline": "",
+        "description": "
+      数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩\/解压实现成为了可能。
+
+
+    ",
         "inLanguage": "zh-cn",
+        "isFamilyFriendly": "true",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\/\/snowlyg.github.io\/clizb\/"
-        },"image": [{
-                            "@type": "ImageObject",
-                            "url": "https:\/\/snowlyg.github.io\/clizb\/featured-image.jpg",
-                            "width":  3527 ,
-                            "height":  2426 
-                        }],"genre": "posts","keywords": "Golang, PHP, Nodejs, zlib, compress, decompress","wordCount":  1482 ,
-        "url": "https:\/\/snowlyg.github.io\/clizb\/","datePublished": "2021-04-23T20:41:20+08:00","dateModified": "2021-04-23T20:41:20+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
-        "publisher": {
+            "@id": "http:\/\/localhost:1313\/clizb\/"
+        },
+        "author" : {
             "@type": "Person",
-            "name": "", "image": [
-            {
-            "@type": "ImageObject",
-            "url": "https:\/\/avatars.githubusercontent.com\/u\/45998760?v=4"
+            "name": "snowlyg"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-04-23T20:41:20.00Z",
+        "datePublished": "2021-04-23T20:41:20.00Z",
+        "dateModified": "2021-04-23T20:41:20.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "snowlyg",
+            "url": "http://localhost:1313/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http:\/\/localhost:1313\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
             }
-            ]},"author": {
-                "@type": "Person",
-                "name": ""
-            },"description": "数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。"
-    }
-    </script><script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [{
-            "@type": "ListItem",
-            "position": 1,
-            "name": "主页",
-            "item": "https:\/\/snowlyg.github.io"
-        },{
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Golang",
-            "item": "https://snowlyg.github.io/categories/golang/"
-        },{
-                "@type": "ListItem",
-                "position": 3,
-                "name": "不同语言之间数据压缩\/解压实现"
-            }]
-    }
-</script></head>
-    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+        },
+        "image": 
+      [
+        
+        "http://localhost:1313/images/site-feature-image.png"
 
-        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
-    <div class="header-wrapper">
-        <div class="header-title">
-            <a href="/" title="SNOWLYG的技术分享" class="header-logo logo-svg"><span class="header-title-pre"><i class='fas fa-pencil-alt fa-fw'></i></span>首页</a>
-        </div>
-        <div class="menu">
-            <nav>
-                <ul class="menu-inner"><li>
-                        <a class="menu-item" href="/posts/" title="文章"> 文章 </a>
-                    </li><li>
-                        <a class="menu-item" href="/tags/" title="标签"> 标签 </a>
-                    </li><li>
-                        <a class="menu-item" href="/categories/" title="分类"> 分类 </a>
-                    </li><li>
-                        <a class="menu-item" href="https://www.github.com/snowlyg/iris/wiki" title="go-iris中文文档" rel="noopener noreffer" target="_blank"> go-iris中文文档 </a>
-                    </li><li>
-                        <a class="menu-item" href="https://brendenaudrina6287.gitbook.io/qor-doc-zh" title="qor中文文档" rel="noopener noreffer" target="_blank"> qor中文文档 </a>
-                    </li><li>
-                        <a class="menu-item" href="https://www.github.com/snowlyg" title="GITHUB" rel="noopener noreffer" target="_blank"> GITHUB </a>
-                    </li></ul>
-            </nav><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
-                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
-                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
-                            <span class="svg-icon icon-search"></span>
-                        </a>
-                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
-                            <span class="svg-icon icon-cancel"></span>
-                        </a>
-                        <span class="search-button search-loading" id="search-loading-desktop">
-                            <span class="svg-icon icon-loading"></span>
-                        </span>
-                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
-                    <span class="svg-icon icon-moon"></span>
-                </a>
-            </div>
-    </div>
-</header><header class="mobile" id="header-mobile">
-    <div class="header-container">
-        <div class="header-wrapper">
-            <div class="header-title">
-                <a href="/" title="SNOWLYG的技术分享" class="header-logo"><span class="header-title-pre"><i class='fas fa-pencil-alt fa-fw'></i></span>首页</a>
-            </div>
-            <div class="menu-toggle" id="menu-toggle-mobile">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-        <div class="menu" id="menu-mobile"><div class="search-wrapper">
-                    <div class="search mobile" id="search-mobile">
-                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
-                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
-                            <span class="svg-icon icon-search"></span>
-                        </a>
-                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
-                            <span class="svg-icon icon-cancel"></span>
-                        </a>
-                        <span class="search-button search-loading" id="search-loading-mobile">
-                            <span class="svg-icon icon-loading"></span>
-                        </span>
-                    </div>
-                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
-                        取消
-                    </a>
-                </div><nav>
-                <ul><li>
-                        <a class="menu-item" href="/posts/" title="文章">文章</a>
-                    </li><li>
-                        <a class="menu-item" href="/tags/" title="标签">标签</a>
-                    </li><li>
-                        <a class="menu-item" href="/categories/" title="分类">分类</a>
-                    </li><li>
-                        <a class="menu-item" href="https://www.github.com/snowlyg/iris/wiki" title="go-iris中文文档" rel="noopener noreffer" target="_blank">go-iris中文文档</a>
-                    </li><li>
-                        <a class="menu-item" href="https://brendenaudrina6287.gitbook.io/qor-doc-zh" title="qor中文文档" rel="noopener noreffer" target="_blank">qor中文文档</a>
-                    </li><li>
-                        <a class="menu-item" href="https://www.github.com/snowlyg" title="GITHUB" rel="noopener noreffer" target="_blank">GITHUB</a>
-                    </li></ul>
-            </nav>
-            <a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
-                <span class="svg-icon icon-moon"></span>
-            </a></div>
-    </div>
-</header><div class="search-dropdown desktop">
-    <div id="search-dropdown-desktop"></div>
-</div>
-<div class="search-dropdown mobile">
-    <div id="search-dropdown-mobile"></div>
-</div><main class="main">
-<div class="container content-article page-toc theme-classic"><div class="toc" id="toc-auto">
-            <div class="toc-title">目录</div>
-            <div class="toc-content" id="toc-content-auto"></div>
-        </div>
+
+      
+      ]
+
+    ,
+        "url" : "http:\/\/localhost:1313\/clizb\/",
+        "wordCount" : "1504",
+        "genre" : [ 
+      
+      "Golang"
+
     
+      
+        ,
 
-    <div class="header-post">
+      
+      "PHP"
 
+    
+      
+        ,
+
+      
+      "Nodejs"
+
+    ],
+        "keywords" : [ 
+      
+      "Golang"
+
+    
+      
+        ,
+
+      
+      "PHP"
+
+    
+      
+        ,
+
+      
+      "Nodejs"
+
+    
+      
+        ,
+
+      
+      "zlib"
+
+    
+      
+        ,
+
+      
+      "compress"
+
+    
+      
+        ,
+
+      
+      "decompress"
+
+    ]
+    }
+  </script>
+
+
+</head>
+<body class="body">
+    <div class="wrapper">
+      <aside
         
-
+          class="wrapper__sidebar"
         
-        <div class="post-title">
-
-                <div class="post-all-meta">
-                    <nav class="breadcrumbs">
-    <ol>
-        <li><a href="/">主页 </a></li><li><a href="/categories/golang/">Golang </a></li><li>不同语言之间数据压缩/解压实现</li>
-    </ol>
-</nav>
-                    <h1 class="single-title flipInX">不同语言之间数据压缩/解压实现</h1><h2 class="single-subtitle">不同语言之间数据压缩/解压实现，go_to_php 或者 go_to_nodejs</h2><div class="post-meta">
-                        <div class="post-meta-line"><span class="post-category">
-                                <a href="/categories/golang/"><i class="svg-icon icon-folder"></i>Golang</a>&nbsp;<a href="/categories/php/"><i class="svg-icon icon-folder"></i>PHP</a>&nbsp;<a href="/categories/nodejs/"><i class="svg-icon icon-folder"></i>Nodejs</a>
-                            </span><span class="post-meta-date">
-                                <i class="svg-icon icon-clock"></i><time class="timeago" datetime="2021-04-23">2021-04-23  20:41:20</time>
-                            </span><span class="post-meta-words">
-                                <i class="svg-icon icon-pencil"></i>约 1482 字
-                            </span>
-                            <span class="post-meta-reading">
-                                <i class="svg-icon icon-stopwatch"></i>预计阅读 3 分钟
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            </div>
-
-    <article class="single toc-start">
-
-        <div class="content-block content-block-first content-block-position">
-
-        <div class="post"><div class="image-theme-classic">
-                <img src="https://snowlyg.github.io/clizb/featured-image.jpg" style="width: 100%">
-            </div><div class="details toc" id="toc-static"  data-kept="">
-                <div class="details-summary toc-title">
-                    <span>目录</span>
-                </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li>
-          <ul>
-            <li><a href="#golang-有如下-5-个基础包">golang 有如下 5 个基础包</a></li>
-            <li><a href="#php-有如下-6-个压缩解压格式">php 有如下 6 个压缩、解压格式</a></li>
-            <li><a href="#nodejs-主要使用-zlib-压缩解压格式">nodejs 主要使用 zlib 压缩、解压格式</a></li>
-            <li><a href="#datajson-文件">data.json 文件</a></li>
-            <li><a href="#golang-实现-zlib">golang 实现 <code>zlib</code></a></li>
-            <li><a href="#nodejs-实现-zlib">nodejs 实现 <code>zlib</code></a></li>
-            <li><a href="#php-实现-zlib">php 实现 <code>zlib</code></a></li>
-            <li><a href="#php-解压-go-压缩文件">PHP 解压 GO 压缩文件</a></li>
-            <li><a href="#php-解压-nodejs-压缩文件">PHP 解压 NODEJS 压缩文件</a></li>
-            <li><a href="#nodejs-解压-php-压缩文件">NODEJS 解压 PHP 压缩文件</a></li>
-            <li><a href="#nodejs-解压-go-压缩文件">NODEJS 解压 GO 压缩文件</a></li>
-            <li><a href="#go-解压-php-压缩文件">GO 解压 PHP 压缩文件</a></li>
-            <li><a href="#go-解压-nodejs-压缩文件">GO 解压 NODEJS 压缩文件</a></li>
-          </ul>
+      ><div
+  class="sidebar
+    animated fadeInDown
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="/images/profile.jpg"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">I&#39;m Jane Doe</a>
+        </div>
+      
+      <div class="sidebar__introduction-description">
+        <p>Snowlyg's Blog</p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://de.linkedin.com/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="Linkedin"
+            title="Linkedin"
+          >
+            <i class="fa-brands fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
         </li>
-      </ul>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://github.com/lxndrblz/anatole/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <i class="fa-brands fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="instagram"
+            title="instagram"
+          >
+            <i class="fa-brands fa-instagram fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="mailto:mail@example.com"
+            target="_blank"
+            rel="noopener me"
+            aria-label="e-mail"
+            title="e-mail"
+          >
+            <i class="fa-solid fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Jane Doe
+        2024
+      
     </li>
+    
   </ul>
-</nav></div>
-            </div><p>文章源码地址：<a href="https://www.github.com/snowlyg/learns" target="_blank" rel="noopener noreffer">https://www.github.com/snowlyg/learns</a></p>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main"
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/"
+              
+              title=""
+              >الرئيسية</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/post/"
+              
+              title=""
+              >المنشورات</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/about/"
+              
+              title=""
+              >حول</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/contact/"
+              
+              title=""
+              >للتواصل</a
+            >
+          </li>
+        
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+    "
+  >
+    
+    <div class="post__content">
+      
+        <h1>不同语言之间数据压缩/解压实现</h1>
+      
+      <p>文章源码地址：<a href="https://www.github.com/snowlyg/learns">https://www.github.com/snowlyg/learns</a></p>
 <h1 id="不同语言之间数据压缩解压实现">不同语言之间数据压缩/解压实现</h1>
 <ul>
 <li>正常的时候，使用一种编程语言实现数据的压缩、解压都十分简单。</li>
 </ul>
 <h4 id="golang-有如下-5-个基础包">golang 有如下 5 个基础包</h4>
 <ul>
-<li><a href="https://golang.org/pkg/compress/gzip" target="_blank" rel="noopener noreffer">compress/gzip</a></li>
-<li><a href="https://golang.org/pkg/compress/bzip2" target="_blank" rel="noopener noreffer">compress/bzip2</a></li>
-<li><a href="https://golang.org/pkg/compress/flate" target="_blank" rel="noopener noreffer">compress/flate</a></li>
-<li><a href="https://golang.org/pkg/compress/lzw" target="_blank" rel="noopener noreffer">compress/lzw</a></li>
-<li><a href="https://golang.org/pkg/compress/zlib" target="_blank" rel="noopener noreffer">compress/zlib</a></li>
+<li><a href="https://golang.org/pkg/compress/gzip">compress/gzip</a></li>
+<li><a href="https://golang.org/pkg/compress/bzip2">compress/bzip2</a></li>
+<li><a href="https://golang.org/pkg/compress/flate">compress/flate</a></li>
+<li><a href="https://golang.org/pkg/compress/lzw">compress/lzw</a></li>
+<li><a href="https://golang.org/pkg/compress/zlib">compress/zlib</a></li>
 <li></li>
-<li><a href="https://www.github.com/chindeo/czlib" target="_blank" rel="noopener noreffer">chindeo/czlib</a></li>
+</ul>
+<h4 id="golang-第三方包使用-c-的-zlib-包本次主要使用这个">golang 第三方包使用 c++ 的 zlib 包，本次主要使用这个。</h4>
+<ul>
+<li><a href="https://www.github.com/chindeo/czlib">chindeo/czlib</a></li>
 </ul>
 <h4 id="php-有如下-6-个压缩解压格式">php 有如下 6 个压缩、解压格式</h4>
 <ul>
-<li><a href="https://www.php.net/manual/en/book.bzip2.php" target="_blank" rel="noopener noreffer">bzip2</a></li>
-<li><a href="https://www.php.net/manual/en/book.lzf.php" target="_blank" rel="noopener noreffer">lzf</a></li>
-<li><a href="https://www.php.net/manual/en/book.phar.php" target="_blank" rel="noopener noreffer">phar</a></li>
-<li><a href="https://www.php.net/manual/en/book.rar.php" target="_blank" rel="noopener noreffer">rar</a></li>
-<li><a href="https://www.php.net/manual/en/book.zip.php" target="_blank" rel="noopener noreffer">zip</a></li>
-<li><a href="https://www.php.net/manual/en/book.zlib.php" target="_blank" rel="noopener noreffer">zlib</a></li>
+<li><a href="https://www.php.net/manual/en/book.bzip2.php">bzip2</a></li>
+<li><a href="https://www.php.net/manual/en/book.lzf.php">lzf</a></li>
+<li><a href="https://www.php.net/manual/en/book.phar.php">phar</a></li>
+<li><a href="https://www.php.net/manual/en/book.rar.php">rar</a></li>
+<li><a href="https://www.php.net/manual/en/book.zip.php">zip</a></li>
+<li><a href="https://www.php.net/manual/en/book.zlib.php">zlib</a></li>
 </ul>
 <h4 id="nodejs-主要使用-zlib-压缩解压格式">nodejs 主要使用 zlib 压缩、解压格式</h4>
 <ul>
-<li><a href="http://nodejs.cn/api/zlib.html" target="_blank" rel="noopener noreffer">zlib</a></li>
+<li><a href="http://nodejs.cn/api/zlib.html">zlib</a></li>
 </ul>
 <p>三种语言都有 <code>zlib</code> 方式的压缩、解压方式，这样选择 <code>zlib</code> 方式来做不同编程语言间的压缩，解压方式比较合适。</p>
 <h4 id="datajson-文件">data.json 文件</h4>
@@ -548,7 +797,7 @@
 <li>执行 <code>php index.php</code> 得到 <code>data.zip</code> 文件</li>
 </ul>
 <p>目前已经实现了三种语言各自的压缩，解压数据。
-因为实现比较简单就没有贴语言间交叉压缩，解压数据的代码了。具体源码参考在：<a href="https://github.com/snowlyg/learns/tree/master/zlib" target="_blank" rel="noopener noreffer">learns/zlib</a>
+因为实现比较简单就没有贴语言间交叉压缩，解压数据的代码了。具体源码参考在：<a href="https://github.com/snowlyg/learns/tree/master/zlib">learns/zlib</a>
 ·</p>
 <h4 id="php-解压-go-压缩文件">PHP 解压 GO 压缩文件</h4>
 <ul>
@@ -842,59 +1091,43 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>这次 <code>go</code> 使用的一个第三方包 <a href="https://www.github.com/chindeo/czlib" target="_blank" rel="noopener noreffer">chindeo/czlib</a>，这个包参考了一个开源库修改而来，主要是调用 c++ 的 <a href="http://www.zlib.net/zlib.html" target="_blank" rel="noopener noreffer">zlib</a> 库。相对于官方的几个压缩库，这个库可以设置更多的参数，能够更方便的兼容其他语言的压缩解压方法。</p>
+</div><p>这次 <code>go</code> 使用的一个第三方包 <a href="https://www.github.com/chindeo/czlib">chindeo/czlib</a>，这个包参考了一个开源库修改而来，主要是调用 c++ 的 <a href="http://www.zlib.net/zlib.html">zlib</a> 库。相对于官方的几个压缩库，这个库可以设置更多的参数，能够更方便的兼容其他语言的压缩解压方法。</p>
 <p><strong>特别是在其他语言使用的压缩解压方法因为一些原因已经固定下来不太好修改的情况下，往往需要其他语言修改对应的参数去匹配相应的压缩设置</strong></p></div>
+    <div class="post__footer">
+      
+        <span><a class="category" href="/categories/golang/">Golang</a><a class="category" href="/categories/php/">PHP</a><a class="category" href="/categories/nodejs/">Nodejs</a></span>
 
-            <div class="post" style="padding-top: 0">
+
+      
+
+      
+        <span><a class="tag" href="/tags/golang/">Golang</a><a class="tag" href="/tags/php/">PHP</a><a class="tag" href="/tags/nodejs/">Nodejs</a><a class="tag" href="/tags/zlib/">zlib</a><a class="tag" href="/tags/compress/">compress</a><a class="tag" href="/tags/decompress/">decompress</a></span>
 
 
-<div class="post-share"><div class="share-link">
-        <a class="share-icon share-twitter" href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://snowlyg.github.io/clizb/" data-title="不同语言之间数据压缩/解压实现" data-via="ld_snowlyg" data-hashtags="Golang,PHP,Nodejs,zlib,compress,decompress"><span class="svg-social-icon icon-twitter"></span></a>
-    </div><div class="share-link">
-        <a class="share-icon share-facebook" href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://snowlyg.github.io/clizb/" data-hashtag="Golang"><span class="svg-social-icon icon-facebook"></span></a>
-    </div><div class="share-link">
-        <a class="share-icon share-tumblr" href="javascript:void(0);" title="分享到 Tumblr" data-sharer="tumblr" data-url="https://snowlyg.github.io/clizb/" data-title="不同语言之间数据压缩/解压实现" data-caption="数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。" data-tags="Golang,PHP,Nodejs,zlib,compress,decompress"><span class="svg-social-icon icon-tumblr"></span></a>
-    </div><div class="share-link">
-        <a class="share-icon share-reddit" href="javascript:void(0);" title="分享到 Reddit" data-sharer="reddit" data-url="https://snowlyg.github.io/clizb/"><span class="svg-social-icon icon-reddit"></span></a>
-    </div><div class="share-link">
-        <a class="share-icon share-line" href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://snowlyg.github.io/clizb/" data-title="不同语言之间数据压缩/解压实现"><span class="svg-social-icon icon-line"></span></a>
-</div><div class="share-link">
-        <a class="share-icon share-weibo" href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://snowlyg.github.io/clizb/" data-title="不同语言之间数据压缩/解压实现"><span class="svg-social-icon icon-weibo"></span></a>
-    </div><div class="share-link">
-    <a class="share-icon share-hackernews" href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="https://snowlyg.github.io/clizb/" data-title="不同语言之间数据压缩/解压实现"><span class="svg-social-icon icon-hacker-news"></span></a>
-    </div></div>
-
-<div class="footer-post-author">
-    <div class="author-avatar"><a href="https://snowlyg.github.io" target="_blank"><img alt="努力决定一切，不向命运屈服" src="https://avatars.githubusercontent.com/u/45998760?v=4"></a></div>
-    <div class="author-info">
-        <div class="name"><a href="https://snowlyg.github.io" target="_blank"></a></div>
-        <div class="number-posts">努力决定一切，不向命运屈服</span></div>
+      
     </div>
-</div><div class="post-tags"><a href="/tags/golang/" class="tag">Golang</a><a href="/tags/php/" class="tag">PHP</a><a href="/tags/nodejs/" class="tag">Nodejs</a><a href="/tags/zlib/" class="tag">zlib</a><a href="/tags/compress/" class="tag">compress</a><a href="/tags/decompress/" class="tag">decompress</a></div></div>
-        </div>
-    <div id="toc-final"></div>
-    </article><div class="page single comments content-block-position"><div id="comments"><div id="utterances"></div><noscript>
-                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
-            </noscript></div></div></div>
 
-</main><footer class="footer">
-        <div class="footer-container"><div class="footer-line"><i class="svg-icon icon-copyright"></i><span>2021 - 2023</span><span class="author">&nbsp;<a href="https://snowlyg.github.io" target="_blank">snowlyg</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span><span class="icp-splitter">&nbsp;|&nbsp;</span><br class="icp-br"/>
-                    <span class="icp"><a rel="license external nofollow noopener noreffer" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">湘ICP备20005575号-1</a></span></div>
-        </div>
-    </footer></div>
+    
+  </div>
 
-        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
-                <i class="svg-icon icon-arrow-up"></i>
-            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
-                <i class="svg-icon icon-comments-fixed"></i>
-            </a>
-        </div><script src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"snowlyg/snowlyg.github.io"}},"search":{"algoliaAppID":"ZNPQ5FHOU5","algoliaIndex":"blog","algoliaSearchKey":"16f4bf5cec120b8b84a80c03088bf453","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MGH3WCW53H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag () { dataLayer.push(arguments); }
-  gtag('js', new Date());
-
-  gtag('config', 'G-MGH3WCW53H');
-</script></body>
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Jane Doe
+        2024
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></body>
 </html>

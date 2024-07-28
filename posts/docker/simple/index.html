@@ -1,0 +1,934 @@
+<!doctype html>
+<html
+  dir="ltr"
+  lang="zh-cn"
+  data-theme=""
+  
+    class="html theme--light"
+  
+><head>
+  <meta charset="utf-8" />
+  <title>
+    
+      
+        简单使用 docker 配置开发环境（mac&#43;php） |
+      Snowlyg
+
+  </title>
+
+  <meta name="generator" content="Hugo 0.129.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Snowlyg" />
+  <meta
+    name="description"
+    content="简单使用 docker 配置开发环境,在 mac 环境下搭建 PHP环境"
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.8d4fad7e6916ad2e291e8d97ada157c70350d6d7150fea137e7243340967befb.css"
+      integrity="sha256-jU&#43;tfmkWrS4pHo2XraFXxwNQ1tcVD&#43;oTfnJDNAlnvvs="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.73ccfdf28df555e11009c13c20ced067af3cb021504cba43644c705930428b00.css"
+    integrity="sha256-c8z98o31VeEQCcE8IM7QZ688sCFQTLpDZExwWTBCiwA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.137b1cf3cea9a8adb7884343a9a5ddddf4280f59153f74dc782fb7f7bf0d0519.css"
+    integrity="sha256-E3sc886pqK23iENDqaXd3fQoD1kVP3TceC&#43;3978NBRk="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.e65dc5b48fb5f39b142360c57c3a215744c94e56c755c929cc3e88fe12aab4d3.css"
+    integrity="sha256-5l3FtI&#43;185sUI2DFfDohV0TJTlbHVckpzD6I/hKqtNM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/regular.min.6f4f16d58da1c82c0c3a3436e021a3d39b4742f741192c546e73e947eacfd92f.css"
+    integrity="sha256-b08W1Y2hyCwMOjQ24CGj05tHQvdBGSxUbnPpR&#43;rP2S8="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.e10425ad768bc98ff1fb272a0ac8420f9d1ba22f0612c08ff1010c95080ffe7e.css"
+    integrity="sha256-4QQlrXaLyY/x&#43;ycqCshCD50boi8GEsCP8QEMlQgP/n4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://snowlyg.github.io/posts/docker/simple/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
+      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
+      crossorigin="anonymous"
+    ></script>
+  
+
+  
+
+  
+
+
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://snowlyg.github.io/posts/docker/simple/featured-image.png">
+  <meta name="twitter:title" content="简单使用 docker 配置开发环境（mac&#43;php）">
+  <meta name="twitter:description" content="简单使用 docker 配置开发环境,在 mac 环境下搭建 PHP环境">
+
+
+
+  
+  <meta property="og:url" content="https://snowlyg.github.io/posts/docker/simple/">
+  <meta property="og:site_name" content="Snowlyg&#39;s Blog">
+  <meta property="og:title" content="简单使用 docker 配置开发环境（mac&#43;php）">
+  <meta property="og:description" content="简单使用 docker 配置开发环境,在 mac 环境下搭建 PHP环境">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-06-19T22:12:48+08:00">
+    <meta property="article:modified_time" content="2021-06-19T22:12:48+08:00">
+    <meta property="article:tag" content="PHP">
+    <meta property="article:tag" content="Docker">
+    <meta property="article:tag" content="Redis">
+    <meta property="article:tag" content="Mysql">
+    <meta property="article:tag" content="Mac">
+    <meta property="og:image" content="https://snowlyg.github.io/posts/docker/simple/featured-image.png">
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "posts",
+        "name": "简单使用 docker 配置开发环境（mac\u002bphp）",
+        "headline": "简单使用 docker 配置开发环境（mac\u002bphp）",
+        "alternativeHeadline": "",
+        "description": "
+      简单使用 docker 配置开发环境,在 mac 环境下搭建 PHP环境
+
+
+    ",
+        "inLanguage": "zh-cn",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/snowlyg.github.io\/posts\/docker\/simple\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-06-19T22:12:48.00Z",
+        "datePublished": "2021-06-19T22:12:48.00Z",
+        "dateModified": "2021-06-19T22:12:48.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "snowlyg",
+            "url": "https://snowlyg.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/snowlyg.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+        
+        "https://snowlyg.github.io/images/site-feature-image.png"
+
+
+      
+      ]
+
+    ,
+        "url" : "https:\/\/snowlyg.github.io\/posts\/docker\/simple\/",
+        "wordCount" : "1528",
+        "genre" : [ 
+      
+      "docker"
+
+    
+      
+        ,
+
+      
+      "PHP"
+
+    
+      
+        ,
+
+      
+      "mac"
+
+    ],
+        "keywords" : [ 
+      
+      "PHP"
+
+    
+      
+        ,
+
+      
+      "docker"
+
+    
+      
+        ,
+
+      
+      "redis"
+
+    
+      
+        ,
+
+      
+      "mysql"
+
+    
+      
+        ,
+
+      
+      "mac"
+
+    ]
+    }
+  </script>
+
+
+</head>
+<body class="body">
+    <div class="wrapper">
+      <aside
+        
+          class="wrapper__sidebar"
+        
+      ><div
+  class="sidebar
+    animated fadeInDown
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="https://avatars.githubusercontent.com/u/45998760?v=4"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">I&#39;m Snowlyg</a>
+        </div>
+      
+      <div class="sidebar__introduction-description">
+        <p>努力决定一切，不向命运屈服</p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://www.linkedin.com/in/dan-luo-3704a21a4/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="Linkedin"
+            title="Linkedin"
+          >
+            <i class="fa-brands fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://github.com/snowlyg/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <i class="fa-brands fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://x.com/rodin990"
+            target="_blank"
+            rel="noopener me"
+            aria-label="X"
+            title="X"
+          >
+            <i class="fa-brands fa-x fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="mailto:brendenaudrina6287@gmail.com"
+            target="_blank"
+            rel="noopener me"
+            aria-label="e-mail"
+            title="e-mail"
+          >
+            <i class="fa-solid fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Snowlyg 2020-2021
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main"
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/posts/"
+              
+              title="文章"
+              >文章</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/tags/"
+              
+              title="标签"
+              >标签</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/categories/"
+              
+              title="分类"
+              >分类</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://www.github.com/snowlyg/iris/wiki"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="go-iris中文文档"
+              >go-iris中文文档</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://brendenaudrina6287.gitbook.io/qor-doc-zh"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="qor中文文档"
+              >qor中文文档</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://www.github.com/snowlyg"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="GITHUB"
+              >GITHUB</a
+            >
+          </li>
+        
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+    "
+  >
+    
+    <div class="post__content">
+      
+        <h1>简单使用 Docker 配置开发环境（mac&#43;php）</h1>
+      
+      <h4 id="前言">前言</h4>
+<ul>
+<li>搭建开发环境是一个开发者必备的技能，但是重复的搭建各种开发环境，依然是一件很无趣且浪费时间的事情。</li>
+<li>以前的解决方案通常是虚拟机或者一些集成工具，它们能很好的解决重复搭建相同开发环境的问题。</li>
+<li>同时它们也有着一些缺陷，比如虚拟机过于笨重，集成工具功能比较固定单一。</li>
+<li>docker 等虚拟容器技术的出现，让开始构建多样的开发环境成为可能。</li>
+</ul>
+<h4 id="基础需求">基础需求</h4>
+<ul>
+<li>安装 <a href="https://www.docker.com/">docker</a></li>
+<li>安装 <a href="https://docs.docker.com/compose/">docker-compose</a></li>
+<li>windows 环境：需要win10 + wsl 子系统 ，参考 <a href="https://learnku.com/articles/22842">WIN10 系统下 WSL 配置 laravel 开发环境指南#</a></li>
+</ul>
+<h4 id="第一步-clone-docker-compose-脚本复制配置文件">第一步 clone docker-compose 脚本,复制配置文件</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 克隆脚本</span>
+</span></span><span class="line"><span class="cl">git clone https://github.com/snowlyg/dnmp
+</span></span><span class="line"><span class="cl"><span class="c1">#复制配置文件</span>
+</span></span><span class="line"><span class="cl">copy docker-compose.sample.yml docker-compose.yml
+</span></span></code></pre></div><h4 id="根据自己需要的服务修改配置文件解开或者加上对应的注释代码">根据自己需要的服务，修改配置文件解开或者加上对应的注释代码</h4>
+<ul>
+<li>php 基础开发环境nginx + mysql + redis 如下</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nginx</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l">./services/nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">NGINX_VERSION</span><span class="p">:</span><span class="w"> </span><span class="m">1.15.7</span>-<span class="l">alpine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">CONTAINER_PACKAGE_URL</span><span class="p">:</span><span class="w"> </span><span class="l">mirrors.aliyun.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">NGINX_INSTALL_APPS</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;80:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;443:443&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./www:/www/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/nginx/ssl:/ssl:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/nginx/conf.d:/etc/nginx/conf.d/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/nginx/fastcgi-php.conf:/etc/nginx/fastcgi-php.conf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/nginx/fastcgi_params:/etc/nginx/fastcgi_params:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./logs/nginx:/var/log/nginx/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">TZ</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">php</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l">./services/php</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">PHP_VERSION</span><span class="p">:</span><span class="w"> </span><span class="l">php:7.3-fpm-alpine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">CONTAINER_PACKAGE_URL</span><span class="p">:</span><span class="w"> </span><span class="l">mirrors.aliyun.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">PHP_EXTENSIONS</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;pdo_mysql,mysqli,mbstring,gd,curl,opcache,soap,amqp,bcmath,pcntl,redis,xdebug&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">TZ</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">php</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">expose</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="m">9501</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">extra_hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;www.site1.com:172.17.0.1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./www:/www/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/php/php.ini:/usr/local/etc/php/php.ini:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/php/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./logs/php:/var/log/php</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./data/composer:/tmp/composer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cap_add</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">SYS_PTRACE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#  php56:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    build:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      context: ./services/php</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      args:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#        PHP_VERSION: php:5.6.40-fpm-alpine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#        CONTAINER_PACKAGE_URL: mirrors.aliyun.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#        PHP_EXTENSIONS: &#34;pdo_mysql,mysqli,mbstring,gd,curl,opcache&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#        TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    container_name: php56</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    expose:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - 9501</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    volumes:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - ./www:/www/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - ./services/php/php.ini:/usr/local/etc/php/php.ini:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - ./services/php/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - ./logs/php:/var/log/php</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - ./data/composer:/tmp/composer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    restart: always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    cap_add:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - SYS_PTRACE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  php54:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    build:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      context: ./services/php54</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      args:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#        PHP_VERSION: php:5.4.45-fpm</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#        CONTAINER_PACKAGE_URL: mirrors.aliyun.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#        PHP_EXTENSIONS: &#34;pdo_mysql,mysqli,mbstring,gd,curl,opcache&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#        TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    container_name: php54</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    volumes:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - ./www:/www/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - ./services/php54/php.ini:/usr/local/etc/php/php.ini:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - ./services/php54/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - ./logs/php:/var/log/php</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - ./data/composer:/tmp/composer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    restart: always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    cap_add:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - SYS_PTRACE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mysql</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:8.0.13</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>- <span class="s2">&#34;3306:3306&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>- <span class="l">./services/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>- <span class="l">./data/mysql:/var/lib/mysql/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span>- <span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;123456&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="nt">TZ</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># mysql5:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   image: mysql:5.7.28</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   container_name: mysql5</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - &#34;3305:3306&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   volumes:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - ./services/mysql5/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - ./data/mysql5:/var/lib/mysql/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   restart: always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     MYSQL_ROOT_PASSWORD: &#34;123456&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  openresty:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    image:  openresty/openresty:alpine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    container_name: openresty</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - &#34;80:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - &#34;443:443&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    volumes:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - ./www:/www/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - ./services/openresty/conf.d:/etc/nginx/conf.d/:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - ./services/openresty/openresty.conf:/ssl:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - ./services/openresty/fastcgi-php.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - ./services/openresty/fastcgi_params:/usr/local/openresty/nginx/conf/fastcgi-php.conf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - ./services/openresty/ssl:/usr/local/openresty/nginx/conf/fastcgi_params:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       - ./logs/nginx:/var/log/nginx/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">redis</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">redis:5.0.3-alpine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">redis</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;6379:6379&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./services/redis/redis.conf:/etc/redis.conf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./data/redis:/data/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;redis-server&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;/etc/redis.conf&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">TZ</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  memcached:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    image: memcached:alpine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    container_name: memcached</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - &#34;11211:11211&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#       MEMCACHED_CACHE_SIZE: &#34;128&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># rabbitmq:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   image: rabbitmq:management</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   container_name: rabbitmq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   restart: always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - &#34;5672:5672&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - &#34;15672:15672&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      RABBITMQ_DEFAULT_USER: &#34;myuser&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      RABBITMQ_DEFAULT_PASS: &#34;mypass&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#         - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># phpmyadmin:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  image: phpmyadmin/phpmyadmin:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  container_name: phpmyadmin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - &#34;8080:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  volumes:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - ./services/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - ./services/phpmyadmin/php-phpmyadmin.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - PMA_HOST=mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - PMA_PORT=3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - TZ=Asia/Shanghai</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># phpredisadmin:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  image: erikdubbelboer/phpredisadmin:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  container_name: phpredisadmin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - &#34;${REDISMYADMIN_HOST_PORT}:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - REDIS_1_HOST=redis</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - REDIS_1_PORT=6379</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - TZ=Asia/Shanghai</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># mongodb:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  image: mongo:4.1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  container_name: mongodb</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      MONGO_INITDB_ROOT_USERNAME: &#34;root&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      MONGO_INITDB_ROOT_PASSWORD: &#34;123456&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  volumes:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - ./data/mongo:/data/db:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - ./data/mongo_key:/mongo:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - &#34;27017:27017&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  command:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     --auth</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  adminmongo:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    image: mrvautin/adminmongo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    container_name: adminmongo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - &#34;1234:1234&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - HOST=0.0.0.0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - DB_HOST=mongodb</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - DB_PORT=27017</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    networks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      - default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># elasticsearch:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  build:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    context: ./services/elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    args:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      ELASTICSEARCH_VERSION: 7.1.1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#      ELASTICSEARCH_PLUGINS: &#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  container_name: elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - TZ=Asia/Shanghai</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - discovery.type=single-node</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - &#34;ES_JAVA_OPTS=-Xms512m -Xmx512m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  volumes:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - ./data/esdata:/usr/share/elasticsearch/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - /services/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  hostname: elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  restart: always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - &#34;9200:9200&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#    - &#34;9300:9300&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#  kibana:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    image: kibana:7.1.1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    container_name: kibana</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      elasticsearch.hosts: http://elasticsearch:9200</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      I18N_LOCALE: &#34;zh-CN&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    hostname: kibana</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    depends_on:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    restart: always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - &#34;5601:5601&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#  logstash:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    image: logstash:7.1.1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    container_name: logstash</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    hostname: logstash</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    restart: always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    depends_on:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - elasticsearch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    environment:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      TZ: &#34;Asia/Shanghai&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    ports:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - &#34;9600:9600&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#      - &#34;5044:5044&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w">
+</span></span></span></code></pre></div><h4 id="在脚本根目录执行-docker-compose-命令构建环境">在脚本根目录执行 docker-compose 命令，构建环境</h4>
+<ul>
+<li>如果本机安装了对应的服务，比如 apache,nginx,mysql 等，会导致对应80，3306 等端口别占用。</li>
+<li>需要修改前面的配置的端口映射关系项</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="c"># 修改为，前面的端口是本机端口，后面的是容器内的端口。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 这个设置表示将 本机端口映射到容器的80端口</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 后面访问的时候也需要使用 83 端口，比如 http://localhost:83s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="s2">&#34;83:80&#34;</span><span class="w"> 
+</span></span></span></code></pre></div><ul>
+<li>，</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">  <span class="c1"># 构建本启动脚本未注释部分的服务，并在守护对应服务</span>
+</span></span><span class="line"><span class="cl">  docker-compose up -d
+</span></span><span class="line"><span class="cl">  <span class="c1"># 如果只启动部分服务，比如 php</span>
+</span></span><span class="line"><span class="cl">  docker-compose up -d php
+</span></span><span class="line"><span class="cl">  <span class="c1"># 或者 php mysql</span>
+</span></span><span class="line"><span class="cl">  docker-compose up -d php mysql
+</span></span></code></pre></div><h4 id="查看对应服务是否正常启动">查看对应服务是否正常启动</h4>
+<ul>
+<li>
+<p>可以直接在面板看
+<img alt="apps" src="/posts/docker/simple/apps.jpg"></p>
+</li>
+<li>
+<p>或者使用命令行 <code>docker ps</code> 查看
+<img alt="apps-cli" src="/posts/docker/simple/apps-cli.png"></p>
+</li>
+<li>
+<p>可以看到对应服务的名称，状态，创建时间和对应的端口</p>
+</li>
+</ul>
+<h4 id="部署一个应用到这个-docker-搭建的-php-环境中">部署一个应用到这个 docker 搭建的 php 环境中</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#进入 nginx 配置目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> services/nginx/conf.d/
+</span></span><span class="line"><span class="cl"><span class="c1"># 新建一个配置文件 loclhost.conf</span>
+</span></span><span class="line"><span class="cl">server <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  listen 80<span class="p">;</span>
+</span></span><span class="line"><span class="cl">  server_name localhost<span class="p">;</span>
+</span></span><span class="line"><span class="cl">  root /www<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">#add_header X-Frame-Options &#34;SAMEORIGIN&#34;;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#add_header X-XSS-Protection &#34;1; mode=block&#34;;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#add_header X-Content-Type-Options &#34;nosniff&#34;;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  index index.html index.htm index.php<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  charset utf-8<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  location / <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#try_files $uri $uri/ /index.php?$query_string;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span>!-e <span class="nv">$request_filename</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      rewrite  ^<span class="o">(</span>.*<span class="o">)</span>$  /index.php?s<span class="o">=</span>/<span class="nv">$1</span>  last<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">location</span> <span class="o">=</span> /favicon.ico <span class="o">{</span> access_log off<span class="p">;</span> log_not_found off<span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">location</span> <span class="o">=</span> /robots.txt  <span class="o">{</span> access_log off<span class="p">;</span> log_not_found off<span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  error_page <span class="m">404</span> /index.php<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  location ~ <span class="se">\.</span>php$ <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    fastcgi_pass  php:9000<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    fastcgi_index index.php<span class="p">;</span>
+</span></span><span class="line"><span class="cl">    fastcgi_param SCRIPT_FILENAME <span class="nv">$realpath_root$fastcgi_script_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    include fastcgi_params<span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  location ~ /<span class="se">\.</span><span class="o">(</span>?!well-known<span class="o">)</span>.* <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    deny all<span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 注意 location ~\.php$ {} 里面， fastcgi_pass 的值是 php:9000 不是通常的 127.0.0.1，至于原理后面会提到</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 新建一个 index.html 文件到 www/ 目录下,再访问 http://localhost 就能看到 index.html 里面的内容了。 </span>
+</span></span></code></pre></div><h4 id="容易踩坑点">容易踩坑点</h4>
+<ul>
+<li>部署正式项目的时候，配置 mysql ,redis 的服务地址配置的时候不能使用常规的  localhost 或者 127.0.0.1。</li>
+<li>因为 php,mysql,redis,nginx 都部署再相对隔离的不同 docker 容器中，就如同把它们安装再了不同机器上一样。</li>
+<li>要在容器中访问其他容器 ，需要使用它们的容器名称，也是它们的网络地址别名，比如 mysql,php 等等。</li>
+<li>所以前面配置 nginx 设置的时候 location ~.php$ {} 里面， fastcgi_pass 的值是 php:9000 不是通常的 127.0.0.1</li>
+</ul></div>
+    <div class="post__footer">
+      
+        <span><a class="category" href="/categories/docker/">docker</a><a class="category" href="/categories/php/">PHP</a><a class="category" href="/categories/mac/">mac</a></span>
+
+
+      
+
+      
+        <span><a class="tag" href="/tags/php/">PHP</a><a class="tag" href="/tags/docker/">docker</a><a class="tag" href="/tags/redis/">redis</a><a class="tag" href="/tags/mysql/">mysql</a><a class="tag" href="/tags/mac/">mac</a></span>
+
+
+      
+    </div>
+
+    
+  </div>
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Snowlyg 2020-2021
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

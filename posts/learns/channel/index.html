@@ -1,0 +1,645 @@
+<!doctype html>
+<html
+  dir="ltr"
+  lang="zh-cn"
+  data-theme=""
+  
+    class="html theme--light"
+  
+><head>
+  <meta charset="utf-8" />
+  <title>
+    
+      
+        学习篇-并发通道 |
+      Snowlyg
+
+  </title>
+
+  <meta name="generator" content="Hugo 0.129.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Snowlyg" />
+  <meta
+    name="description"
+    content="并发通道篇-控制 windows 服务"
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.8d4fad7e6916ad2e291e8d97ada157c70350d6d7150fea137e7243340967befb.css"
+      integrity="sha256-jU&#43;tfmkWrS4pHo2XraFXxwNQ1tcVD&#43;oTfnJDNAlnvvs="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.73ccfdf28df555e11009c13c20ced067af3cb021504cba43644c705930428b00.css"
+    integrity="sha256-c8z98o31VeEQCcE8IM7QZ688sCFQTLpDZExwWTBCiwA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.137b1cf3cea9a8adb7884343a9a5ddddf4280f59153f74dc782fb7f7bf0d0519.css"
+    integrity="sha256-E3sc886pqK23iENDqaXd3fQoD1kVP3TceC&#43;3978NBRk="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.e65dc5b48fb5f39b142360c57c3a215744c94e56c755c929cc3e88fe12aab4d3.css"
+    integrity="sha256-5l3FtI&#43;185sUI2DFfDohV0TJTlbHVckpzD6I/hKqtNM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/regular.min.6f4f16d58da1c82c0c3a3436e021a3d39b4742f741192c546e73e947eacfd92f.css"
+    integrity="sha256-b08W1Y2hyCwMOjQ24CGj05tHQvdBGSxUbnPpR&#43;rP2S8="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.e10425ad768bc98ff1fb272a0ac8420f9d1ba22f0612c08ff1010c95080ffe7e.css"
+    integrity="sha256-4QQlrXaLyY/x&#43;ycqCshCD50boi8GEsCP8QEMlQgP/n4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://snowlyg.github.io/posts/learns/channel/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
+      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
+      crossorigin="anonymous"
+    ></script>
+  
+
+  
+
+  
+
+
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://snowlyg.github.io/posts/learns/channel/featured-image.jpg">
+  <meta name="twitter:title" content="学习篇-并发通道">
+  <meta name="twitter:description" content="并发通道篇-控制 windows 服务">
+
+
+
+  
+  <meta property="og:url" content="https://snowlyg.github.io/posts/learns/channel/">
+  <meta property="og:site_name" content="Snowlyg&#39;s Blog">
+  <meta property="og:title" content="学习篇-并发通道">
+  <meta property="og:description" content="并发通道篇-控制 windows 服务">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-03-26T20:02:48+08:00">
+    <meta property="article:modified_time" content="2021-03-26T20:02:48+08:00">
+    <meta property="article:tag" content="Golang">
+    <meta property="article:tag" content="Learns">
+    <meta property="og:image" content="https://snowlyg.github.io/posts/learns/channel/featured-image.jpg">
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "posts",
+        "name": "学习篇-并发通道",
+        "headline": "学习篇-并发通道",
+        "alternativeHeadline": "",
+        "description": "
+      并发通道篇-控制 windows 服务
+
+
+    ",
+        "inLanguage": "zh-cn",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/snowlyg.github.io\/posts\/learns\/channel\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-03-26T20:02:48.00Z",
+        "datePublished": "2021-03-26T20:02:48.00Z",
+        "dateModified": "2021-03-26T20:02:48.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "snowlyg",
+            "url": "https://snowlyg.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/snowlyg.github.io\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+        
+        "https://snowlyg.github.io/images/site-feature-image.png"
+
+
+      
+      ]
+
+    ,
+        "url" : "https:\/\/snowlyg.github.io\/posts\/learns\/channel\/",
+        "wordCount" : "1059",
+        "genre" : [ 
+      
+      "learns"
+
+    ],
+        "keywords" : [ 
+      
+      "Golang"
+
+    
+      
+        ,
+
+      
+      "learns"
+
+    ]
+    }
+  </script>
+
+
+</head>
+<body class="body">
+    <div class="wrapper">
+      <aside
+        
+          class="wrapper__sidebar"
+        
+      ><div
+  class="sidebar
+    animated fadeInDown
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="https://avatars.githubusercontent.com/u/45998760?v=4"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">I&#39;m Snowlyg</a>
+        </div>
+      
+      <div class="sidebar__introduction-description">
+        <p>努力决定一切，不向命运屈服</p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://www.linkedin.com/in/dan-luo-3704a21a4/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="Linkedin"
+            title="Linkedin"
+          >
+            <i class="fa-brands fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://github.com/snowlyg/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <i class="fa-brands fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://x.com/rodin990"
+            target="_blank"
+            rel="noopener me"
+            aria-label="X"
+            title="X"
+          >
+            <i class="fa-brands fa-x fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="mailto:brendenaudrina6287@gmail.com"
+            target="_blank"
+            rel="noopener me"
+            aria-label="e-mail"
+            title="e-mail"
+          >
+            <i class="fa-solid fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Snowlyg 2020-2021
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main"
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/posts/"
+              
+              title="文章"
+              >文章</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/tags/"
+              
+              title="标签"
+              >标签</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/categories/"
+              
+              title="分类"
+              >分类</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://www.github.com/snowlyg/iris/wiki"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="go-iris中文文档"
+              >go-iris中文文档</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://brendenaudrina6287.gitbook.io/qor-doc-zh"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="qor中文文档"
+              >qor中文文档</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="https://www.github.com/snowlyg"
+              
+                target="_blank" rel="noopener noreferrer"
+              
+              title="GITHUB"
+              >GITHUB</a
+            >
+          </li>
+        
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+    "
+  >
+    
+    <div class="post__content">
+      
+        <h1>学习篇-并发通道</h1>
+      
+      <h4 id="控制-windows-服务">控制 <code>windows</code> 服务</h4>
+<p>文章源码地址：<a href="https://www.github.com/snowlyg/learns">https://www.github.com/snowlyg/learns</a></p>
+<p>这一篇将介绍如何远程控制服务，通过一个心跳机制，每隔一段时间检测一个服务是否需要更新，停止，启动等操作。</p>
+<p>然后通过得到的信息和指令来操控服务。</p>
+<p>大概的思路就是通过并发和通道特性来实现。并发和通道都是 <code>go</code> 很重要的特性，学会如何运用它们很有必要。</p>
+<h4 id="启动一个简单的协程">启动一个简单的协程</h4>
+<p>用 <code>go</code> 关键字很简单就可以启动一个协程。
+这个协程每隔 5 秒打印一次当前时间</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">hearbeat</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">println</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">RFC3339</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">go</span> <span class="nf">hearbeat</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 防止主进程退出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">select</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="新建一个容量为1的通道每隔-5-秒发送一个操作指令到通道">新建一个容量为1的通道，每隔 5 秒发送一个操作指令到通道</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// actionChan 容量为 1 的通道，在 hearbeat , do 两个协程中传递指令信息
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 容量为 1 可以控制并发的数量，只有等发送的指令被处理后才能发送另一个指令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">actionChan</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">string</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">hearbeat</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// TODO： 这里需要做处理写死了 update，正常这里需要请求某个接口返回得到一个操作指令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">action</span> <span class="o">:=</span> <span class="s">&#34;update&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">actionChan</span> <span class="o">&lt;-</span> <span class="nx">action</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 休眠 5 秒
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nb">println</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">RFC3339</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">go</span> <span class="nf">hearbeat</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 防止主进程退出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">select</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>通道容量为 1 ,发送一个指令后如果指令没有处理。
+没那么将无法再向通道发送指令，<code>hearbeat</code> 会被阻塞直到指令被处理通道才能从新接受新的指令。
+新建一个新的协程接受指令，并执行相应的操作。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/snowlyg/learns/advance/windows&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// actionChan 容量为 1 的通道，在 hearbeat , do 两个协程中传递指令信息
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 容量为 1 可以控制并发的数量，只有等发送的指令被处理后才能发送另一个指令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">actionChan</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">string</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// hearbeat 每隔 5 秒返回一个操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">hearbeat</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// TODO： 这里需要做处理写死了 update，正常这里需要请求某个接口返回得到一个操作指令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">action</span> <span class="o">:=</span> <span class="s">&#34;update&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">actionChan</span> <span class="o">&lt;-</span> <span class="nx">action</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 休眠 5 秒
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nb">println</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">RFC3339</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 执行操作，从通道 actionChan 获取对应指令并执行对应操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">do</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">switch</span> <span class="o">&lt;-</span><span class="nx">actionChan</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">case</span> <span class="s">&#34;start&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">err</span> <span class="o">:=</span> <span class="nx">windows</span><span class="p">.</span><span class="nf">ServiceStart</span><span class="p">(</span><span class="s">&#34;myservice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;start myservice %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">println</span><span class="p">(</span><span class="s">&#34;start&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">case</span> <span class="s">&#34;stop&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">err</span> <span class="o">:=</span> <span class="nx">windows</span><span class="p">.</span><span class="nf">ServiceStop</span><span class="p">(</span><span class="s">&#34;myservice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;stop myservice %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">println</span><span class="p">(</span><span class="s">&#34;stop&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">case</span> <span class="s">&#34;install&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">err</span> <span class="o">:=</span> <span class="nx">windows</span><span class="p">.</span><span class="nf">ServiceInstall</span><span class="p">(</span><span class="s">&#34;myservice&#34;</span><span class="p">,</span> <span class="s">&#34;../cmd/myservice.exe&#34;</span><span class="p">,</span> <span class="s">&#34;myservice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;install myservice %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">println</span><span class="p">(</span><span class="s">&#34;install&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">case</span> <span class="s">&#34;uninstall&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">err</span> <span class="o">:=</span> <span class="nx">windows</span><span class="p">.</span><span class="nf">ServiceUninstall</span><span class="p">(</span><span class="s">&#34;myservice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;uninstall myservice %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">println</span><span class="p">(</span><span class="s">&#34;uninstall&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">case</span> <span class="s">&#34;update&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">err</span> <span class="o">:=</span> <span class="nx">windows</span><span class="p">.</span><span class="nf">ServiceStop</span><span class="p">(</span><span class="s">&#34;myservice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;stop myservice %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">err</span> <span class="p">=</span> <span class="nx">windows</span><span class="p">.</span><span class="nf">ServiceUninstall</span><span class="p">(</span><span class="s">&#34;myservice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;uninstall myservice %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">err</span> <span class="p">=</span> <span class="nx">windows</span><span class="p">.</span><span class="nf">ServiceInstall</span><span class="p">(</span><span class="s">&#34;myservice&#34;</span><span class="p">,</span> <span class="s">&#34;myservice.exe&#34;</span><span class="p">,</span> <span class="s">&#34;myservice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;install myservice %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">println</span><span class="p">(</span><span class="s">&#34;update&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">println</span><span class="p">(</span><span class="s">&#34;unknow action&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 启动一个心跳协程，每隔5秒发送指令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">go</span> <span class="nf">hearbeat</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 启动一个执行命令协程，并等待心跳协程发送指令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">go</span> <span class="nf">do</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 防止主进程退出
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">select</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>新的 <code>do</code> 协程从通道中取出指令，并执行对应的指令。
+这个程序中 <code>hearbeat</code> 和 <code>do</code> 两个方法不会安装原有的执行顺序方式执行。
+增加了 <code>go</code> 关键字的修饰后，它们同时都在执行中，一个向通道 <code>actionChan</code> 中发送数据，
+一个从通道 <code>actionChan</code> 中取出数据。</p>
+<p>通过这个程序，我们就能远程控制某个或者多个服务了。
+这个在我们需要远程更新或者控制多个服务器上的服务程序时非常有用。
+只需要在本地执行操作，而不用一个个登录远程服务器操作。</p></div>
+    <div class="post__footer">
+      
+        <span><a class="category" href="/categories/learns/">learns</a></span>
+
+
+      
+
+      
+        <span><a class="tag" href="/tags/golang/">Golang</a><a class="tag" href="/tags/learns/">learns</a></span>
+
+
+      
+    </div>
+
+    
+  </div>
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Snowlyg 2020-2021
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Snowlyg&#39;s Blog</title>
+    <link>https://snowlyg.github.io/categories/</link>
+    <description>Recent content in Categories on Snowlyg&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 13 Nov 2022 21:33:30 +0800</lastBuildDate><atom:link href="https://snowlyg.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tools</title>
+      <link>https://snowlyg.github.io/categories/tools/</link>
+      <pubDate>Sun, 13 Nov 2022 21:33:30 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/tools/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://snowlyg.github.io/categories/golang/</link>
+      <pubDate>Sun, 11 Jul 2021 14:23:13 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/golang/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://snowlyg.github.io/categories/docker/</link>
+      <pubDate>Sat, 19 Jun 2021 22:12:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/docker/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Mac</title>
+      <link>https://snowlyg.github.io/categories/mac/</link>
+      <pubDate>Sat, 19 Jun 2021 22:12:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/mac/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>PHP</title>
+      <link>https://snowlyg.github.io/categories/php/</link>
+      <pubDate>Sat, 19 Jun 2021 22:12:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/php/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Nodejs</title>
+      <link>https://snowlyg.github.io/categories/nodejs/</link>
+      <pubDate>Fri, 23 Apr 2021 20:41:20 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/nodejs/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Reflection</title>
+      <link>https://snowlyg.github.io/categories/reflection/</link>
+      <pubDate>Fri, 23 Apr 2021 20:35:37 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/reflection/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Learns</title>
+      <link>https://snowlyg.github.io/categories/learns/</link>
+      <pubDate>Fri, 26 Mar 2021 20:02:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/learns/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>IRIS</title>
+      <link>https://snowlyg.github.io/categories/iris/</link>
+      <pubDate>Sat, 06 Mar 2021 17:10:32 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/categories/iris/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1439 @@
+<!doctype html>
+<html
+  dir="ltr"
+  lang="zh-cn"
+  data-theme=""
+  
+    class="html theme--light"
+  
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <title>
+    
+      
+        使用 golang 实现 grpc 信令服务基于 webrtc 的 android 应用 |
+      Jane Doe
+
+  </title>
+
+  <meta name="generator" content="Hugo 0.129.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Jane Doe" />
+  <meta
+    name="description"
+    content="使用 Golang 实现 gRPC 信令服务的 WebRTC 应用的技术整合。图像应该包含象征实时通信、服务器-客户端交互和 Go 编程语言"
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.8d4fad7e6916ad2e291e8d97ada157c70350d6d7150fea137e7243340967befb.css"
+      integrity="sha256-jU&#43;tfmkWrS4pHo2XraFXxwNQ1tcVD&#43;oTfnJDNAlnvvs="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.73ccfdf28df555e11009c13c20ced067af3cb021504cba43644c705930428b00.css"
+    integrity="sha256-c8z98o31VeEQCcE8IM7QZ688sCFQTLpDZExwWTBCiwA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.137b1cf3cea9a8adb7884343a9a5ddddf4280f59153f74dc782fb7f7bf0d0519.css"
+    integrity="sha256-E3sc886pqK23iENDqaXd3fQoD1kVP3TceC&#43;3978NBRk="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.e65dc5b48fb5f39b142360c57c3a215744c94e56c755c929cc3e88fe12aab4d3.css"
+    integrity="sha256-5l3FtI&#43;185sUI2DFfDohV0TJTlbHVckpzD6I/hKqtNM="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/regular.min.6f4f16d58da1c82c0c3a3436e021a3d39b4742f741192c546e73e947eacfd92f.css"
+    integrity="sha256-b08W1Y2hyCwMOjQ24CGj05tHQvdBGSxUbnPpR&#43;rP2S8="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.e10425ad768bc98ff1fb272a0ac8420f9d1ba22f0612c08ff1010c95080ffe7e.css"
+    integrity="sha256-4QQlrXaLyY/x&#43;ycqCshCD50boi8GEsCP8QEMlQgP/n4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="http://localhost:1313/golang-grpc-webrtc-android/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
+      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
+      crossorigin="anonymous"
+    ></script>
+  
+
+  
+
+  
+
+
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/site-feature-image.png">
+  <meta name="twitter:title" content="使用 golang 实现 grpc 信令服务基于 webrtc 的 android 应用">
+  <meta name="twitter:description" content="使用 Golang 实现 gRPC 信令服务的 WebRTC 应用的技术整合。图像应该包含象征实时通信、服务器-客户端交互和 Go 编程语言">
+      <meta name="twitter:site" content="@ld_snowlyg">
+
+
+
+  
+  <meta property="og:url" content="http://localhost:1313/golang-grpc-webrtc-android/">
+  <meta property="og:site_name" content="Snowlyg&#39;s Blog">
+  <meta property="og:title" content="使用 golang 实现 grpc 信令服务基于 webrtc 的 android 应用">
+  <meta property="og:description" content="使用 Golang 实现 gRPC 信令服务的 WebRTC 应用的技术整合。图像应该包含象征实时通信、服务器-客户端交互和 Go 编程语言">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-28T18:35:51+08:00">
+    <meta property="article:modified_time" content="2024-07-28T18:35:51+08:00">
+    <meta property="article:tag" content="Webrtc">
+    <meta property="article:tag" content="Golang">
+    <meta property="article:tag" content="Android">
+    <meta property="article:tag" content="Grpc">
+    <meta property="og:image" content="http://localhost:1313/images/site-feature-image.png">
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "posts",
+        "name": "使用 golang 实现 grpc 信令服务基于 webrtc 的 android 应用",
+        "headline": "使用 golang 实现 grpc 信令服务基于 webrtc 的 android 应用",
+        "alternativeHeadline": "",
+        "description": "
+      使用 Golang 实现 gRPC 信令服务的 WebRTC 应用的技术整合。图像应该包含象征实时通信、服务器-客户端交互和 Go 编程语言
+
+
+    ",
+        "inLanguage": "zh-cn",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/golang-grpc-webrtc-android\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "snowlyg"
+        },
+        "copyrightYear" : "2024",
+        "dateCreated": "2024-07-28T18:35:51.00Z",
+        "datePublished": "2024-07-28T18:35:51.00Z",
+        "dateModified": "2024-07-28T18:35:51.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "snowlyg",
+            "url": "http://localhost:1313/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http:\/\/localhost:1313\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+        
+        "http://localhost:1313/images/site-feature-image.png"
+
+
+      
+      ]
+
+    ,
+        "url" : "http:\/\/localhost:1313\/golang-grpc-webrtc-android\/",
+        "wordCount" : "4042",
+        "genre" : [ 
+      
+      "webrtc"
+
+    
+      
+        ,
+
+      
+      "Golang"
+
+    
+      
+        ,
+
+      
+      "android"
+
+    
+      
+        ,
+
+      
+      "grpc"
+
+    ],
+        "keywords" : [ 
+      
+      "webrtc"
+
+    
+      
+        ,
+
+      
+      "Golang"
+
+    
+      
+        ,
+
+      
+      "android"
+
+    
+      
+        ,
+
+      
+      "grpc"
+
+    ]
+    }
+  </script>
+
+
+</head>
+<body class="body">
+    <div class="wrapper">
+      <aside
+        
+          class="wrapper__sidebar"
+        
+      ><div
+  class="sidebar
+    animated fadeInDown
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="/images/profile.jpg"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">I&#39;m Jane Doe</a>
+        </div>
+      
+      <div class="sidebar__introduction-description">
+        <p>Snowlyg's Blog</p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://de.linkedin.com/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="Linkedin"
+            title="Linkedin"
+          >
+            <i class="fa-brands fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://github.com/lxndrblz/anatole/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <i class="fa-brands fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener me"
+            aria-label="instagram"
+            title="instagram"
+          >
+            <i class="fa-brands fa-instagram fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+        <li class="sidebar__list-item">
+          <a
+            href="mailto:mail@example.com"
+            target="_blank"
+            rel="noopener me"
+            aria-label="e-mail"
+            title="e-mail"
+          >
+            <i class="fa-solid fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Jane Doe
+        2024
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main"
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/"
+              
+              title=""
+              >الرئيسية</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/post/"
+              
+              title=""
+              >المنشورات</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/about/"
+              
+              title=""
+              >حول</a
+            >
+          </li>
+        
+
+      
+        
+        
+          <li class="nav__list-item">
+            
+            <a
+              
+              href="/ar/contact/"
+              
+              title=""
+              >للتواصل</a
+            >
+          </li>
+        
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+    "
+  >
+    
+    <div class="post__content">
+      
+        <h1>使用 Golang 实现 Grpc 信令服务基于 Webrtc 的 Android 应用</h1>
+      
+      <h1 id="音视频网关对接指南">音视频网关对接指南</h1>
+<p>WebRTC（Web Real-Time Communication）是一种实时通信技术，它允许网络应用或站点在没有中间人的情况下建立点对点的连接。</p>
+<ul>
+<li>
+<p>网关工作示意图</p>
+<p><img alt="gateway_call.drawio_0e3e4cf1.gif" src="/golang-grpc-webrtc-android/gateway.gif"></p>
+</li>
+<li>
+<p>网关信息简要图</p>
+<p><img alt="mmexport1720865399584_edit_3013954453705.png" src="/golang-grpc-webrtc-android/baseinfo.png"></p>
+</li>
+<li>
+<p>网关对接流程</p>
+<ol>
+<li>
+<p>设置网关初始化参数（是否开启调试，是否开启http协议，网关文件存储路径制定等等）</p>
+<ul>
+<li>
+<p>code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">grpcSocket</span> <span class="p">=</span> <span class="nc">GrpcSocket</span><span class="p">.</span><span class="n">Builder</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">setIsMultil</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">setDebug</span><span class="p">(</span><span class="nc">BuildConfig</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">setTest</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">setEnableHttp</span><span class="p">(</span><span class="nc">BuildConfig</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">setFileDir</span><span class="p">(</span><span class="nc">FileUtil</span><span class="p">.</span><span class="n">getContactFileDir</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">grpcSocket</span><span class="p">.</span><span class="n">startSocketThread</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>然后启动网关，并成功监听 18086 端口。</p>
+<ul>
+<li>
+<p>code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.concurrent.ExecutorService</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.concurrent.Executors</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">gateway.Gateway</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @author root
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">GrpcSocket</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isMultil</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">debug</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">enableHttp</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">fileDir</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">ExecutorService</span><span class="w"> </span><span class="n">executorService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Executors</span><span class="p">.</span><span class="na">newSingleThreadExecutor</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">GrpcSocket</span><span class="p">(</span><span class="n">Builder</span><span class="w"> </span><span class="n">builder</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">isMultil</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">isMultil</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">debug</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">enableHttp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">enableHttp</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">fileDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">fileDir</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// Set the configurations</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">setIsMultil</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">isMultil</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Gateway</span><span class="p">.</span><span class="na">setDebug</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">debug</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Gateway</span><span class="p">.</span><span class="na">setEnableHttp</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">enableHttp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">setFileSrc</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">fileDir</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">startSocketThread</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">executorService</span><span class="p">.</span><span class="na">submit</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">run</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">shutdown</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">executorService</span><span class="p">.</span><span class="na">shutdown</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// If you need to wait for all tasks to finish, you can use the following method</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// executorService.awaitTermination(60, TimeUnit.SECONDS);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Builder</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isMultil</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">debug</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">enableHttp</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">fileDir</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">Builder</span><span class="w"> </span><span class="nf">setIsMultil</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">isMultil</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">isMultil</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isMultil</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">Builder</span><span class="w"> </span><span class="nf">setDebug</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">debug</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">debug</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">Builder</span><span class="w"> </span><span class="nf">setEnableHttp</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">enableHttp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">enableHttp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">enableHttp</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">Builder</span><span class="w"> </span><span class="nf">setFileDir</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">fileDir</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">fileDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fileDir</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">GrpcSocket</span><span class="w"> </span><span class="nf">build</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">GrpcSocket</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>注册网关，第一次注册网关，需要先注册服务所在的设备；再注册其他设备。</p>
+<ul>
+<li>
+<p>code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">register</span><span class="p">(</span><span class="n">serveIp</span><span class="p">,</span><span class="n">ip</span><span class="p">,</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">displayName</span><span class="p">,</span><span class="w"> </span><span class="n">identity</span><span class="p">,</span><span class="n">clientType</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>设置网关回调方法，回调方法用于网关和客户端。</p>
+<ul>
+<li>
+<p>code</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">type</span><span class="w"> </span><span class="n">InterfaceSocket</span><span class="w"> </span><span class="kd">interface</span> <span class="err">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nc">CallbackSuccess</span><span class="p">()</span><span class="w"> </span><span class="c1">// 启动成功回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackError</span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="c1">// 报错回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackNotice</span><span class="p">(</span><span class="n">msg</span><span class="w"> </span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="c1">// 告警回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackOpenMutilActivity</span><span class="p">(</span><span class="n">number</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">isCallout</span><span class="w"> </span><span class="n">bool</span><span class="p">)</span><span class="w"> </span><span class="c1">// 多人拨打界回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackOpenActivity</span><span class="p">(</span><span class="n">number</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">isCallout</span><span class="w"> </span><span class="n">bool</span><span class="p">)</span><span class="w"> </span><span class="c1">// 拨打界回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackAnswer</span><span class="p">()</span><span class="w"> </span><span class="c1">// 接听回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackHold</span><span class="p">()</span><span class="w"> </span><span class="c1">// 保持</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackHangUp</span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">reason</span><span class="w"> </span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="c1">// 挂断回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c1">// 离线模式 不需要候选者交换</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackReceiverIceCandidate</span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">sdpMid</span><span class="p">,</span><span class="w"> </span><span class="n">candidate</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">sdpMLineIndex</span><span class="w"> </span><span class="n">int32</span><span class="p">)</span><span class="w"> </span><span class="c1">// IceCandidate 回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="n">CallbackReceiverSdp</span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="n">sdp</span><span class="p">,</span><span class="w"> </span><span class="n">sdpType</span><span class="w"> </span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="c1">// Sdp回调</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">CallbackBroadcast</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="n">string</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// InterfaceSocket callBack</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">setInterfaceSocket</span><span class="p">(</span><span class="n">callBack</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>客户端 webrtc 对接流程：</p>
+<ul>
+<li>
+<p>客户端 <code>WEBRTC SdpObserver</code>, <code>PeerConnection.Observer</code> 关键代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Peer</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">SdpObserver</span><span class="p">,</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">Observer</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">PeerConnection</span><span class="w"> </span><span class="n">pc</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">mirror</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">Boolean</span><span class="w"> </span><span class="n">isHold</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 初始化 webrtc 连接</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="nf">Peer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">this</span><span class="p">.</span><span class="na">pc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createPeerConnection</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">this</span><span class="p">.</span><span class="na">mirror</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onSignalingChange</span><span class="p">(</span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">SignalingState</span><span class="w"> </span><span class="n">signalingState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onSignalingChange: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">signalingState</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onIceConnectionChange</span><span class="p">(</span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">IceConnectionState</span><span class="w"> </span><span class="n">iceConnectionState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onIceConnectionChange: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">iceConnectionState</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 连接状态变化事件监听器，连接状态变化可以做一些处理。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 比如断开重连；或者断开退出通话等等</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onConnectionChange</span><span class="p">(</span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">PeerConnectionState</span><span class="w"> </span><span class="n">newState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onConnectionChange: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">newState</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;---viewCallback:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">viewCallback</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">PeerConnectionState</span><span class="p">.</span><span class="na">DISCONNECTED</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="o">||</span><span class="w"> </span><span class="n">newState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">PeerConnectionState</span><span class="p">.</span><span class="na">FAILED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kc">null</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">viewCallback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">viewCallback</span><span class="p">.</span><span class="na">onCloseViewActivity</span><span class="p">(</span><span class="s">&#34;异常关闭&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onIceConnectionReceivingChange</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onIceConnectionReceivingChange:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onIceGatheringChange</span><span class="p">(</span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">IceGatheringState</span><span class="w"> </span><span class="n">iceGatheringState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onIceGatheringChange:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">iceGatheringState</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// ICE 候选者监听器，通常是发起邀请或者接受邀请的时候回触发监听器。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 需要通过 sendSdp 把对应的本地描述信息发送给服务端。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onIceCandidate</span><span class="p">(</span><span class="n">IceCandidate</span><span class="w"> </span><span class="n">iceCandidate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">number</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">SessionDescription</span><span class="w"> </span><span class="n">sessionDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pc</span><span class="p">.</span><span class="na">getLocalDescription</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kc">null</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sessionDescription</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">sendSdp</span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">sessionDescription</span><span class="p">.</span><span class="na">description</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">sessionDescription</span><span class="p">.</span><span class="na">type</span><span class="p">),</span><span class="w"> </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">status</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onIceCandidatesRemoved</span><span class="p">(</span><span class="n">IceCandidate</span><span class="o">[]</span><span class="w"> </span><span class="n">iceCandidates</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onIceCandidatesRemoved:&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onAddStream</span><span class="p">(</span><span class="n">MediaStream</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 移除 Stream 事件监听器，当服务器停止推流时候触发。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 客户端需要关闭对应用户的画面。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onRemoveStream</span><span class="p">(</span><span class="n">MediaStream</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onRemoveStream: &#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isHold</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">viewCallback</span><span class="p">.</span><span class="na">onCloseWithId</span><span class="p">(</span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">identity</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onDataChannel</span><span class="p">(</span><span class="n">DataChannel</span><span class="w"> </span><span class="n">dataChannel</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onDataChannel: &#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onRenegotiationNeeded</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onRenegotiationNeeded: &#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 推流监听器，当有媒体流推过来的时候触发。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onAddTrack</span><span class="p">(</span><span class="n">RtpReceiver</span><span class="w"> </span><span class="n">receiver</span><span class="p">,</span><span class="w"> </span><span class="n">MediaStream</span><span class="o">[]</span><span class="w"> </span><span class="n">mediaStreams</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">d</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onAddTrack mediaStreams length:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mediaStreams</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; connectionState:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pc</span><span class="p">.</span><span class="na">connectionState</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Boolean</span><span class="w"> </span><span class="n">isVideo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">isVideo</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//todo 通过Gateway.instance().getPeerByNum(Gateway.instance().number()).getStatus() ==Gateway.PEER_STATUS_ANSWER判断自己状态 （处理保持）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//todo Gateway.instance().updatePeer(number,Gateway.PEER_STATUS_HOLD);保持对应的联系人</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">MediaStream</span><span class="w"> </span><span class="n">mediaStream</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">mediaStreams</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">videoTrackSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">.</span><span class="na">videoTracks</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">audioTrackSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">.</span><span class="na">audioTracks</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onAddTrack mediaStream.Id : &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">.</span><span class="na">getId</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="s">&#34; videoTrackSize: [&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">videoTrackSize</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;]&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="s">&#34; audioTrackSize: [&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">audioTrackSize</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;]&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="s">&#34; isVideo: [&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">isVideo</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;]&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="s">&#34; connectionState:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pc</span><span class="p">.</span><span class="na">connectionState</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">audioTrackSize</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">isVideo</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">videoTrackSize</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">0</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">continue</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Client</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">getContact</span><span class="p">(</span><span class="n">mediaStream</span><span class="p">.</span><span class="na">getId</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">identity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">.</span><span class="na">getId</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">.</span><span class="na">getId</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">displayName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mediaStream</span><span class="p">.</span><span class="na">getId</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">identity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">getIdentity</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">getNumber</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">displayName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">getDisplayName</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">finalIdentity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">identity</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">finalNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">number</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">finalDisplayName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">displayName</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">viewCallback</span><span class="p">.</span><span class="na">onAddRemoteStream</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">mediaStream</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">finalIdentity</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">finalNumber</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">finalDisplayName</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">isVideo</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="kc">false</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">pc</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">mirror</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">viewCallback</span><span class="p">.</span><span class="na">onSetLocalStream</span><span class="p">(</span><span class="n">_localStream</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onTrack</span><span class="p">(</span><span class="n">RtpTransceiver</span><span class="w"> </span><span class="n">transceiver</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 对应 AddTrack</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onRemoveTrack</span><span class="p">(</span><span class="n">RtpReceiver</span><span class="w"> </span><span class="n">receiver</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onRemoveTrack: &#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onStandardizedIceConnectionChange</span><span class="p">(</span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">IceConnectionState</span><span class="w"> </span><span class="n">newState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onStandardizedIceConnectionChange: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">newState</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onSelectedCandidatePairChanged</span><span class="p">(</span><span class="n">CandidatePairChangeEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onSelectedCandidatePairChanged: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onIceCandidateError</span><span class="p">(</span><span class="n">IceCandidateErrorEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onIceCandidateError: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="c1">// pc.createAnswer 成功后触发。 </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="c1">// pc.setLocalDescription 设置 sdp 到当前 Peer。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="c1">// 再将自己的 sdp 发送给对方。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreateSuccess</span><span class="p">(</span><span class="n">SessionDescription</span><span class="w"> </span><span class="n">origSdp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onCreateSuccess: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">origSdp</span><span class="p">.</span><span class="na">type</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">sdpDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">origSdp</span><span class="p">.</span><span class="na">description</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">boolean</span><span class="w"> </span><span class="n">isVideo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">isVideo</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isVideo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">sdpDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">preferCodec</span><span class="p">(</span><span class="n">sdpDescription</span><span class="p">,</span><span class="w"> </span><span class="n">RtcParameter</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">VIDEO_CODEC_H264</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isVideo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">sdpDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">setStartBitrate</span><span class="p">(</span><span class="n">RtcParameter</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">VIDEO_CODEC_H264</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="n">sdpDescription</span><span class="p">,</span><span class="w"> </span><span class="n">RtcParameter</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">videoStartBitrateKbps</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">sdpDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">setStartBitrate</span><span class="p">(</span><span class="n">RtcParameter</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">AUDIO_CODEC_OPUS</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">sdpDescription</span><span class="p">,</span><span class="w"> </span><span class="n">RtcParameter</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">audioStartBitrate</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kd">final</span><span class="w"> </span><span class="n">SessionDescription</span><span class="w"> </span><span class="n">sdp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SessionDescription</span><span class="p">(</span><span class="n">origSdp</span><span class="p">.</span><span class="na">type</span><span class="p">,</span><span class="w"> </span><span class="n">sdpDescription</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">pc</span><span class="p">.</span><span class="na">setLocalDescription</span><span class="p">(</span><span class="n">Peer</span><span class="p">.</span><span class="na">this</span><span class="p">,</span><span class="w"> </span><span class="n">sdp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pc</span><span class="p">.</span><span class="na">connectionState</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">PeerConnectionState</span><span class="p">.</span><span class="na">CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">String</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">number</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">SessionDescription</span><span class="w"> </span><span class="n">sessionDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pc</span><span class="p">.</span><span class="na">getLocalDescription</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">sendSdp</span><span class="p">(</span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">sessionDescription</span><span class="p">.</span><span class="na">description</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">sessionDescription</span><span class="p">.</span><span class="na">type</span><span class="p">),</span><span class="w"> </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">status</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// mPeer.pc.setRemoteDescription 设置成功后触发</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// 应答视频邀请</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onSetSuccess</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onSetSuccess: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pc</span><span class="p">.</span><span class="na">signalingState</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SessionDescription</span><span class="p">.</span><span class="na">Type</span><span class="p">.</span><span class="na">ANSWER</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pc</span><span class="p">.</span><span class="na">signalingState</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">SignalingState</span><span class="p">.</span><span class="na">HAVE_REMOTE_OFFER</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">pc</span><span class="p">.</span><span class="na">createAnswer</span><span class="p">(</span><span class="n">Peer</span><span class="p">.</span><span class="na">this</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MediaConstraints</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreateFailure</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onCreateFailure: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onSetFailure</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onSetFailure: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//初始化 RTCPeerConnection 连接管道</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">PeerConnection</span><span class="w"> </span><span class="nf">createPeerConnection</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_factory</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;createPeerConnection _factory is nil&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c1">// 管道连接抽象类实现方法</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">RTCConfiguration</span><span class="w"> </span><span class="n">rtcConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">RTCConfiguration</span><span class="p">(</span><span class="n">ICEServers</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">rtcConfig</span><span class="p">.</span><span class="na">tcpCandidatePolicy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">TcpCandidatePolicy</span><span class="p">.</span><span class="na">DISABLED</span><span class="p">;</span><span class="w"> </span><span class="c1">//TCP候选策略控制开关 (禁用)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">rtcConfig</span><span class="p">.</span><span class="na">bundlePolicy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">BundlePolicy</span><span class="p">.</span><span class="na">MAXBUNDLE</span><span class="p">;</span><span class="w"> </span><span class="c1">//捆绑的策略  (最大约束)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">rtcConfig</span><span class="p">.</span><span class="na">rtcpMuxPolicy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">RtcpMuxPolicy</span><span class="p">.</span><span class="na">REQUIRE</span><span class="p">;</span><span class="w"> </span><span class="c1">//实时传输控制协议多路策略</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">rtcConfig</span><span class="p">.</span><span class="na">keyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PeerConnection</span><span class="p">.</span><span class="na">KeyType</span><span class="p">.</span><span class="na">ECDSA</span><span class="p">;</span><span class="w">  </span><span class="c1">//加密类型</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">rtcConfig</span><span class="p">.</span><span class="na">enableCpuOveruseDetection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">_factory</span><span class="p">.</span><span class="na">createPeerConnection</span><span class="p">(</span><span class="n">rtcConfig</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Sdp回调代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 收到 CallbackReceiverSdp 回调发送过来的 sdp 信息。 </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// mPeer.pc.setRemoteDescription 设置 sdp 到当前 Peer。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// 再将自己的 sdp 发送给对方。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreateOfferSuccess</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">sdp</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">sdpType</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Log</span><span class="p">.</span><span class="na">i</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;onCreateOfferSuccess: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sdpType</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">executor</span><span class="p">.</span><span class="na">execute</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">SessionDescription</span><span class="w"> </span><span class="n">sessionDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SessionDescription</span><span class="p">(</span><span class="n">SessionDescription</span><span class="p">.</span><span class="na">Type</span><span class="p">.</span><span class="na">OFFER</span><span class="p">,</span><span class="w"> </span><span class="n">sdp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Objects</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">sdpType</span><span class="p">,</span><span class="w"> </span><span class="n">SessionDescription</span><span class="p">.</span><span class="na">Type</span><span class="p">.</span><span class="na">ANSWER</span><span class="p">.</span><span class="na">toString</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">sessionDescription</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SessionDescription</span><span class="p">(</span><span class="n">SessionDescription</span><span class="p">.</span><span class="na">Type</span><span class="p">.</span><span class="na">ANSWER</span><span class="p">,</span><span class="w"> </span><span class="n">sdp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mPeer</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;onCreateOfferSuccess peer is nil&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mPeer</span><span class="p">.</span><span class="na">pc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;onCreateOfferSuccess peer.pc is nil&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">mPeer</span><span class="p">.</span><span class="na">pc</span><span class="p">.</span><span class="na">setRemoteDescription</span><span class="p">(</span><span class="n">mPeer</span><span class="p">,</span><span class="w"> </span><span class="n">sessionDescription</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">viewCallback</span><span class="p">.</span><span class="na">onOfferCallSuccess</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">								</span><span class="c1">// sdp 回调并发控制，回调完成必须执行。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">								</span><span class="c1">// 否则 网关 sdp 回调会被阻塞</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">doneSdp</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Gateway</span><span class="p">.</span><span class="na">instance</span><span class="p">().</span><span class="na">onError</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>网关回调介绍</p>
+<ul>
+<li>CallbackOpenActivity
+<ul>
+<li><strong>单人模式下</strong><code>（isMulti=false）</code> : 当执行 <code>Gateway.instance().callInvite(”110”)</code> 成功后，拨打方和接听方都会触发<code>CallbackOpenActivity</code> 回调。</li>
+<li>在 <code>CallbackOpenActivity</code> 回调中，客户端需要初始化 <code>WEBRTC</code> 一个 <code>PeerConnection</code>（代码参考前面<code>WEBRTC SdpObserver</code>, <code>PeerConnection.Observer</code> 中的关键代码） 并且获取音频和视频(<code>isVideo=true</code>)流, 并将音视频流都添加到 <code>PeerConnection</code> 中，等待服务端发起 <code>WEBRTC OFFER</code>。</li>
+<li>完成 <code>WEBRTC</code> 初始化和音视频流的添加之后, 执行<code>Gateway.instance().updatePeer(Gateway.instance().number(),Gateway.PEER_STATUS_INCALL)</code> 通知服务端，客户端已经完成<code>WEBRTC</code> 初始化和音视频流的添加，服务端会发起 <code>WEBRTC OFFER</code> 通过几次 <code>Sdp</code> 交互之后服务端和客户端的 <code>PeerConnection</code> 状态都会变成 <code>connected</code> 服务端会收并保存到对应客户端音视频流。</li>
+<li>最后因为在 <code>CallbackOpenActivity</code> 回调的时候网关会开启一个异步锁(如果客户端没有响应，<code>1s</code> 后会自动超时释放)，所以客户端必需要在最后执行<code>Gateway.instance().doneViewOpen()</code> 来释放网关的异步锁。</li>
+</ul>
+</li>
+<li>CallbackOpenMutilActivity
+<ul>
+<li><strong>多人模式下</strong><code>（isMulti=true）</code> : 客户端触发 <code>CallbackOpenMutilActivity</code> 回调，流程和<code>CallbackOpenActivity</code> 回调一样。</li>
+<li>当第二个拨打邀请触发 <code>CallbackOpenMutilActivity</code>回调的时候不需要再初始化 <code>WEBRTC</code> 和添加音视频流，只需要在页面上新增一个客户端信息（等待接听或者挂断）。</li>
+</ul>
+</li>
+<li>CallbackAnswer
+<ul>
+<li>当执行 <code>Gateway.instance().callAnswer(”110”)</code> 成功后,拨打方和接听方都会触发<code>CallbackAnswer</code> 回调,<code>Gateway.instance().updatePeer(Gateway.instance().number(),Gateway.PEER_STATUS_ANSWER)</code> 通知服务端，客户端已经收到接听邀请。</li>
+<li>服务端会再次发起 <code>WEBRTC OFFER</code> 并将前面保存的音视频流发送给对方，对应客户端的 <code>PeerConnection 的 onAddTrack</code> 监听器会触发并收到对应的音视频流，此时就可以播放声音和画面了 。</li>
+</ul>
+</li>
+<li>CallbackHold
+<ul>
+<li>当执行 <code>Gateway.instance().callHold(”110”)</code> 成功后, 拨打方和接听方都会触发<code>CallbackHold</code> 回调。</li>
+<li>服务端会发起 <code>WEBRTC OFFER</code> 移除双方音视频流的推送，对应客户端的 <code>PeerConnection</code> 的 <code>onRemoveTrack</code> <code>PeerConnection</code> 的 <code>onRemoveTrack</code>监听器会触发通知客户端移除对应通话者的画面,<code>Gateway.instance().updatePeer(Gateway.instance().number(),Gateway.PEER_STATUS_HOLD)</code> 通知服务端，客户端已经进入保持状态。</li>
+</ul>
+</li>
+<li>CallbackHangUp
+<ul>
+<li>服务端可以执行 <code>Gateway.instance().callHangupAll(&quot;挂断&quot;)</code> 挂断所有通话者,也可以执行 <code>Gateway.instance().callHangup(“1110”，&quot;挂断&quot;)</code> 挂断特定的通话者。</li>
+<li><strong>单人模式下</strong><code>（isMulti=false）</code>
+<ul>
+<li>拨打方和接听方都会触发<code>CallbackHangUp</code> 回调，需要在回调中释放摄像头和话筒，并且断开 <code>WEBRTC PeerConnection</code> 最后关闭页面。</li>
+</ul>
+</li>
+<li><strong>多人模式下</strong><code>（isMulti=true)</code>
+<ul>
+<li>当通话人数大于 1 的时候（不包括服务端），单个通话者挂断之后只有对应的客户端会触发<code>CallbackHangUp</code> 回调，服务端 <code>PeerConnection</code> 的 <code>onRemoveTrack</code>监听器会触发通知客户端移除对应通话者的画面，其他通话中的用户不会受到影响。</li>
+<li>当通话人数小于等于 1 的时候，拨打方和接听方都会触发<code>CallbackHangUp</code> 回调，需要在回调中释放摄像头和话筒，并且断开 <code>WEBRTC PeerConnection</code> 最后关闭页面。</li>
+</ul>
+</li>
+<li>最后因为在 <code>CallbackHangUp</code> 回调的时候网关会开启一个异步锁(如果客户端没有响应，<code>1s</code> 后会自动超时释放)，所以客户端必需要在最后执行<code>Gateway.instance().doneCloseOpen()</code> 来释放网关的异步锁。</li>
+</ul>
+</li>
+<li>CallbackBroadcast
+<ul>
+<li>当执行 <code>Gateway.instance().broadcast(”110”,&quot;broadcast json data&quot;)</code> 成功后, <code>110</code> 号码客户端会触发 <code>CallbackBroadcast</code> 回调。</li>
+<li>第一个参数为号码，第二个参数通常是<code>json</code>字符串。</li>
+</ul>
+</li>
+<li>CallbackReceiverSdp
+<ul>
+<li>配合 <code>Gateway.instance().sendSdp()</code>  使用来进行信令信息交换，信令交换也有异步锁，需要执行<code>Gateway.instance().doneSdp()</code> 来释放异步锁。</li>
+</ul>
+</li>
+<li>CallbackSuccess
+<ul>
+<li>网关启动成功后触发，通知客户端网关已经启动。</li>
+</ul>
+</li>
+<li>CallbackError
+<ul>
+<li>网关发生错误时候触发，用于发送网关错误信息给客户端。</li>
+</ul>
+</li>
+<li>CallbackNotice
+<ul>
+<li>网关发生非致命错误时候触发，用于发送网关警告信息给客户端。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></div>
+    <div class="post__footer">
+      
+        <span><a class="category" href="/categories/webrtc/">webrtc</a><a class="category" href="/categories/golang/">Golang</a><a class="category" href="/categories/android/">android</a><a class="category" href="/categories/grpc/">grpc</a></span>
+
+
+      
+
+      
+        <span><a class="tag" href="/tags/webrtc/">webrtc</a><a class="tag" href="/tags/golang/">Golang</a><a class="tag" href="/tags/android/">android</a><a class="tag" href="/tags/grpc/">grpc</a></span>
+
+
+      
+    </div>
+
+    
+  </div>
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Jane Doe
+        2024
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
+    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

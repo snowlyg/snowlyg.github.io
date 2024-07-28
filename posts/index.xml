@@ -1,77 +1,166 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>所有文章 - SNOWLYG的技术分享</title>
-        <link>https://snowlyg.github.io/posts/</link>
-        <description>所有文章 | SNOWLYG的技术分享</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 13 Nov 2022 21:33:30 &#43;0800</lastBuildDate><atom:link href="https://snowlyg.github.io/posts/" rel="self" type="application/rss+xml" /><item>
-    <title>IPTV电信电视频道列表的抓取教程</title>
-    <link>https://snowlyg.github.io/iptv/</link>
-    <pubDate>Sun, 13 Nov 2022 21:33:30 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/iptv/</guid>
-    <description><![CDATA[IPTV电信电视频道列表的抓取教程]]></description>
-</item><item>
-    <title>Golang 程序中获取执行目录的几种方式</title>
-    <link>https://snowlyg.github.io/dir/</link>
-    <pubDate>Sun, 11 Jul 2021 14:23:13 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/dir/</guid>
-    <description><![CDATA[Golang 程序中获取执行目录的几种方式]]></description>
-</item><item>
-    <title>简单使用 docker 配置开发环境（mac&#43;php）</title>
-    <link>https://snowlyg.github.io/simple/</link>
-    <pubDate>Sat, 19 Jun 2021 22:12:48 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/simple/</guid>
-    <description><![CDATA[简单使用 docker 配置开发环境,在 mac 环境下搭建 PHP环境]]></description>
-</item><item>
-    <title>控制台窗口和powershell运行服务会卡住的解决办法</title>
-    <link>https://snowlyg.github.io/cmd/</link>
-    <pubDate>Sat, 05 Jun 2021 14:59:30 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/cmd/</guid>
-    <description><![CDATA[控制台窗口和powershell运行服务会卡住的解决办法]]></description>
-</item><item>
-    <title>不同语言之间数据压缩/解压实现</title>
-    <link>https://snowlyg.github.io/clizb/</link>
-    <pubDate>Fri, 23 Apr 2021 20:41:20 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/clizb/</guid>
-    <description><![CDATA[数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。]]></description>
-</item><item>
-    <title>golang 简单实现数据转换格式化</title>
-    <link>https://snowlyg.github.io/gotransformer/</link>
-    <pubDate>Fri, 23 Apr 2021 20:35:37 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/gotransformer/</guid>
-    <description><![CDATA[golang 基于反射原理实现简单实现数据转换格式化]]></description>
-</item><item>
-    <title>学习篇-并发通道</title>
-    <link>https://snowlyg.github.io/channel/</link>
-    <pubDate>Fri, 26 Mar 2021 20:02:48 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/channel/</guid>
-    <description><![CDATA[并发通道篇-控制 windows 服务]]></description>
-</item><item>
-    <title>学习篇-进阶</title>
-    <link>https://snowlyg.github.io/advance/</link>
-    <pubDate>Fri, 26 Mar 2021 20:02:48 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/advance/</guid>
-    <description><![CDATA[进阶篇-注册 windows 服务]]></description>
-</item><item>
-    <title>学习篇-基础</title>
-    <link>https://snowlyg.github.io/base/</link>
-    <pubDate>Mon, 22 Mar 2021 21:17:27 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/base/</guid>
-    <description><![CDATA[基础篇-编写一个简单的go程序]]></description>
-</item><item>
-    <title>学习篇-前言</title>
-    <link>https://snowlyg.github.io/start/</link>
-    <pubDate>Fri, 19 Mar 2021 22:49:30 &#43;0800</pubDate>
-    <author>snowlyg</author>
-    <guid>https://snowlyg.github.io/start/</guid>
-    <description><![CDATA[前言篇-随便写一些闲话]]></description>
-</item></channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Snowlyg&#39;s Blog</title>
+    <link>https://snowlyg.github.io/posts/</link>
+    <description>Recent content in Posts on Snowlyg&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 13 Nov 2022 21:33:30 +0800</lastBuildDate><atom:link href="https://snowlyg.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IPTV电信电视频道列表的抓取教程</title>
+      <link>https://snowlyg.github.io/posts/iptv/</link>
+      <pubDate>Sun, 13 Nov 2022 21:33:30 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/iptv/</guid>
+      
+        <description>IPTV电信电视频道列表的抓取教程</description>
+      
+    </item>
+    
+    <item>
+      <title>Golang 程序中获取执行目录的几种方式</title>
+      <link>https://snowlyg.github.io/posts/dir/</link>
+      <pubDate>Sun, 11 Jul 2021 14:23:13 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/dir/</guid>
+      
+        <description>Golang 程序中获取执行目录的几种方式</description>
+      
+    </item>
+    
+    <item>
+      <title>简单使用 docker 配置开发环境（mac&#43;php）</title>
+      <link>https://snowlyg.github.io/posts/docker/simple/</link>
+      <pubDate>Sat, 19 Jun 2021 22:12:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/docker/simple/</guid>
+      
+        <description>简单使用 docker 配置开发环境,在 mac 环境下搭建 PHP环境</description>
+      
+    </item>
+    
+    <item>
+      <title>控制台窗口和powershell运行服务会卡住的解决办法</title>
+      <link>https://snowlyg.github.io/posts/tools/cmd/</link>
+      <pubDate>Sat, 05 Jun 2021 14:59:30 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/tools/cmd/</guid>
+      
+        <description>控制台窗口和powershell运行服务会卡住的解决办法</description>
+      
+    </item>
+    
+    <item>
+      <title>不同语言之间数据压缩/解压实现</title>
+      <link>https://snowlyg.github.io/posts/clizb/</link>
+      <pubDate>Fri, 23 Apr 2021 20:41:20 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/clizb/</guid>
+      
+        <description>数据的压缩解压，大部分语言都是基于 zlib 这个库实现的，那么让不同语言之间数据压缩/解压实现成为了可能。</description>
+      
+    </item>
+    
+    <item>
+      <title>golang 简单实现数据转换格式化</title>
+      <link>https://snowlyg.github.io/posts/gotransformer/</link>
+      <pubDate>Fri, 23 Apr 2021 20:35:37 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/gotransformer/</guid>
+      
+        <description>golang 基于反射原理实现简单实现数据转换格式化</description>
+      
+    </item>
+    
+    <item>
+      <title>学习篇-并发通道</title>
+      <link>https://snowlyg.github.io/posts/learns/channel/</link>
+      <pubDate>Fri, 26 Mar 2021 20:02:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/channel/</guid>
+      
+        <description>并发通道篇-控制 windows 服务</description>
+      
+    </item>
+    
+    <item>
+      <title>学习篇-进阶</title>
+      <link>https://snowlyg.github.io/posts/learns/advance/</link>
+      <pubDate>Fri, 26 Mar 2021 20:02:48 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/advance/</guid>
+      
+        <description>进阶篇-注册 windows 服务</description>
+      
+    </item>
+    
+    <item>
+      <title>学习篇-基础</title>
+      <link>https://snowlyg.github.io/posts/learns/base/</link>
+      <pubDate>Mon, 22 Mar 2021 21:17:27 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/base/</guid>
+      
+        <description>基础篇-编写一个简单的go程序</description>
+      
+    </item>
+    
+    <item>
+      <title>学习篇-前言</title>
+      <link>https://snowlyg.github.io/posts/learns/start/</link>
+      <pubDate>Fri, 19 Mar 2021 22:49:30 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learns/start/</guid>
+      
+        <description>前言篇-随便写一些闲话</description>
+      
+    </item>
+    
+    <item>
+      <title>iris &#43; casbin 从陌生到学会使用的过程</title>
+      <link>https://snowlyg.github.io/posts/iris-go-api-2/</link>
+      <pubDate>Sat, 06 Mar 2021 17:10:32 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/iris-go-api-2/</guid>
+      
+        <description>简单介绍iris&#43;casbin从陌生到学会使用的过程详细</description>
+      
+    </item>
+    
+    <item>
+      <title>PHP 转 GO 新手问题汇总</title>
+      <link>https://snowlyg.github.io/posts/learning-glang-for-phper/</link>
+      <pubDate>Sat, 06 Mar 2021 16:56:40 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/learning-glang-for-phper/</guid>
+      
+        <description>自己整理的一些PHP转GO新手问题，以及一些解决问题的经验分享</description>
+      
+    </item>
+    
+    <item>
+      <title>iris-go框架构建登陆api项目开发详解</title>
+      <link>https://snowlyg.github.io/posts/iris-go-api-1/</link>
+      <pubDate>Sat, 06 Mar 2021 16:33:37 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/iris-go-api-1/</guid>
+      
+        <description>简单的介绍iris-go框架构建登陆api后台项目的过程</description>
+      
+    </item>
+    
+    <item>
+      <title>Golang 如何交叉编译？在一个平台上生成另一个平台的可执行程序</title>
+      <link>https://snowlyg.github.io/posts/golang-for-build/</link>
+      <pubDate>Sat, 06 Mar 2021 13:55:40 +0800</pubDate>
+      
+      <guid>https://snowlyg.github.io/posts/golang-for-build/</guid>
+      
+        <description>Golang 支持交叉编译，在一个平台上生成另一个平台的可执行程序，最近使用了一下，非常好用，这里备忘一下。</description>
+      
+    </item>
+    
+  </channel>
 </rss>
